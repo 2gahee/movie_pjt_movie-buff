@@ -1,0 +1,25 @@
+.navbar .nav-item {
+    font-weight: bold;
+}
+
+.navbar-toggler {
+    background-color: #ffff;
+}
+
+.navbar .nav-link {
+    color: #ffff; 
+}
+
+.navbar .nav-link:hover {
+    color: #ff0000; 
+}
+
+
+
+
+
+body {
+    background-color: #D3D3D3; 
+    padding: 0;
+    font-family: Arial, sans-serif; 
+  }
