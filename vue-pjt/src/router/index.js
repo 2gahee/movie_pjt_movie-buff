@@ -13,7 +13,8 @@ const router = createRouter({
   routes: [
     {
       path:'/',
-      component: HomeView
+      component: HomeView,
+      name: 'Home'
     },
     {
       path:'/community',
@@ -23,7 +24,8 @@ const router = createRouter({
 
     {
       path:'/signup',
-      component: NewAccountView
+      component: NewAccountView,
+      name: 'Signup'
     },
     {
       path:'/login',
@@ -46,6 +48,12 @@ router.beforeEach((to, from) => {
   if (to.name === 'Articles' && !store.isLogin) {
     window.alert('로그인이 필요합니다.')
     return { name: 'LogIn' }
+  }
+  // 만약 로그인 사용자가 회원가입 또는 로그인 페이지로 이동하려고 하면
+  // 메인(Home) 페이지로 보냄
+  if ((to.name === 'Signup' || to.name === 'Login') && (store.isLogin)) {
+    window.alert('이미 로그인 되어있습니다.')
+    return { name: 'Home' }
   }
 })
 

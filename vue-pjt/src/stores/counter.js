@@ -86,7 +86,7 @@ const logIn = function (payload) {
   })
     .then((res) => {
       token.value = res.data.key
-      // router.push({ name: 'ArticleView' })
+      router.push({ name: 'Articles' })
       console.log(res.data)
       console.log('로그인 성공')
     })
