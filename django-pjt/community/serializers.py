@@ -26,8 +26,8 @@ class ArticleSerializer(serializers.ModelSerializer):
             model = UserModel
             fields = ('username',)
     user = ArticleUserSerializer(read_only=True)
-    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
-    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     class CommentDetailSerializer(serializers.ModelSerializer):
         created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
         class CommentUserSerializer(serializers.ModelSerializer):

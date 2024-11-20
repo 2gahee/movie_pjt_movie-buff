@@ -2,16 +2,16 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 export const useMovieStore = defineStore('movie', () => {
-  const token = 'Token b63f63cb8d56de105c3e5b5c526686222ab0917a'
   const articles = ref([])
   const API_URL = 'http://127.0.0.1:8000'
+  const token = ref(null)
   const getArticles = function () {
     axios({
       method: 'get',
       url: `${API_URL}/community`,
       headers: {
-        Authorization: token,
-        Accept: 'application/json'
+        Authorization: `Token ${token.value}`
+        // Accept: 'application/json'
       },
       withCredentials: true
     })
@@ -71,9 +71,9 @@ const logIn = function (payload) {
   })
     .then((res) => {
       token.value = res.data.key
-      router.push({ name: 'ArticleView' })
-      // console.log(res.data)
-      // console.log('로그인 성공')
+      // router.push({ name: 'ArticleView' })
+      console.log(res.data)
+      console.log('로그인 성공')
     })
     .catch((err) => {
       console.log(err)
@@ -82,5 +82,6 @@ const logIn = function (payload) {
 
 
 
-  return { articles, API_URL, getArticles, signUp, logIn }
+
+  return { articles, API_URL, getArticles, signUp, logIn, token }
 })

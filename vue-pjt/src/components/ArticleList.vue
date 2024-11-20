@@ -1,7 +1,8 @@
 <template>
 
     <div class="btn-table">
-    <button type="button" class="btn btn-dark">작성하기</button>
+    <button @click="goCreate" type="button" class="btn btn-dark">작성하기</button>
+    
     <table class="table table-hover table-striped text-center">
         <thead>
             <tr>
@@ -15,7 +16,7 @@
             <tr v-for="article in articleList" :key="article.pk">
                 <td class="title"><a>{{article.title}}</a></td>
                 <td class="hashtag">{{article.content}}</td>
-                <td class="user-id">{{article.user_id}}</td>
+                <td class="user-id">{{article.user.username}}</td>
                 <td class="created-at">
                     <time>{{article.created_at}}</time>
                 </td>
@@ -28,6 +29,8 @@
 <script setup>
 import { ref, onMounted, watchEffect } from 'vue';
 import { useMovieStore } from '@/stores/counter';
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const store = useMovieStore()
 const articleList = ref([])
 onMounted(() => {
@@ -36,6 +39,9 @@ onMounted(() => {
 watchEffect(() => {
     articleList.value = store.articles;
 })
+const goCreate = function() {
+    router.push({path:'/community/create/'})
+}
 </script>
 
 <style scoped>

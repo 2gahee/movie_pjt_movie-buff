@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import ArticlesView from '@/views/ArticlesView.vue'
 import NewAccountView from '@/views/NewAccountView.vue'
 import LoginView from '@/views/LoginView.vue' 
+import ArticleCreateView from '@/views/ArticleCreateView.vue'
 
 
 
@@ -15,7 +16,8 @@ const router = createRouter({
     },
     {
       path:'/community',
-      component: ArticlesView
+      component: ArticlesView,
+      name: 'Articles'
     },
 
     {
@@ -26,6 +28,11 @@ const router = createRouter({
       path:'/login',
       component:LoginView
     },
+    {
+      path:'/community/create/',
+      component: ArticleCreateView,
+      name: 'createArticle'
+    }
   ],
 })
 

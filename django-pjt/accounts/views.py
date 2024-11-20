@@ -6,7 +6,7 @@ from .serializers import CustomRegisterSerializer
 from .forms import CustomUserCreationForm
 
 @api_view(['POST'])
-@permission_classes([AllowAny])
+@permission_classes(['AllowAny'])
 def signup(request):
     serializer = CustomRegisterSerializer(data=request.data)
     if serializer.is_valid():

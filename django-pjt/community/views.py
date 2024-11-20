@@ -21,7 +21,7 @@ def article_list(request):
     elif request.method == "POST":
         serializer = ArticleSerializer(data=request.data, context={'request': request})
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user_id=request.user)
+            serializer.save(user_id=request.user.id)
             # serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
