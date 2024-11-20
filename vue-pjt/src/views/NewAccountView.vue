@@ -91,13 +91,13 @@ const password2 =ref('');
 const store = useMovieStore()
 
 const signUp = function () {
-//   console.log('signUp메서드 호출됨');  
+  console.log('signUp메서드 호출됨');  
   const payload = {
     username: username.value,
-    email: email.value,
-    nickname : nickname.value,
     password1: password1.value,
     password2: password2.value,
+    nickname : nickname.value,
+    email: email.value,
   }
   store.signUp(payload)
 }

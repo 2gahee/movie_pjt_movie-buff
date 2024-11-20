@@ -29,20 +29,58 @@ const signUp = function (payload) {
   axios({
     method:'post',
     url: `${API_URL}/accounts/signup/`,
+    withCredentials: true,
     data: {
       username, password1, password2, nickname, email
     }
   })
     .then((res) => {
-      console.log(res)
-      console.log('회원가입 성공')
-      const password = password1
-      logIn({ username, password })
+      if (res.data) {
+        console.log('회원가입 성공:', res.data);
+        const password = password1
+        logIn({ username, password })
+      } else {
+        console.error('응답 데이터 없음');
+      }
+
     })
     .catch((error) => {
-      console.error(error.response)
+      // console.error(error.response)
+      console.error('Error response:', error.response);
+      if (error.response && error.response.data) {
+        console.error('Error details:', error.response.data);
+        // non_field_errors가 있을 경우 그 내용을 확인
+        if (error.response.data.non_field_errors) {
+          console.error('Non-field errors:', error.response.data.non_field_errors);
+        }
+      }
+
   })
 }
 
-  return { articles, API_URL, getArticles, signUp }
+
+const logIn = function (payload) {
+  const { username, password } = payload
+
+  axios({
+    method: 'post',
+    url: `${API_URL}/accounts/login/`,
+    data: {
+      username, password
+    }
+  })
+    .then((res) => {
+      token.value = res.data.key
+      router.push({ name: 'ArticleView' })
+      // console.log(res.data)
+      // console.log('로그인 성공')
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
+
+
+  return { articles, API_URL, getArticles, signUp, logIn }
 })
