@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router'
 
 export const useMovieStore = defineStore('movie', () => {
   const articles = ref([])
+  const nowOns = ref([])
   const API_URL = 'http://127.0.0.1:8000'
   const token = ref(null)
   const isLogin = computed(() => {
@@ -96,7 +97,23 @@ const logIn = function (payload) {
 }
 
 
+const getNowOns = function () {
+  axios({
+    method: 'get',
+    url: `${API_URL}/movies/now-on/`,
+    headers: {
+      Authorization: `Token ${token.value}`
+      // Accept: 'application/json'
+    },
+    withCredentials: true
+  })
+  .then(res => {
+    nowOns.value = res.data
+    console.log(res.data)
+  })
+  .catch(err => console.log(err))
+}
 
 
-  return { articles, API_URL, getArticles, signUp, logIn, token, isLogin }
+  return { articles, API_URL, getArticles, signUp, logIn, token, getNowOns, isLogin, nowOns }
 })
