@@ -31,12 +31,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'accounts',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'community',
-    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
+
 ]
 
 ROOT_URLCONF = 'movie_project.urls'
@@ -162,6 +164,11 @@ ACCOUNT_ADAPTER = 'accounts.models.CustomAccountAdapter'
 SITE_ID = 1
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:5173',
+    'http://localhost:5173'
+]
 
 ACCOUNT_EMAIL_VERIFICATION = "none"  # 이메일 인증을 비활성화
 ACCOUNT_AUTHENTICATED_REDIRECT_URL = '/'  # 인증 후 리다이렉트할 URL

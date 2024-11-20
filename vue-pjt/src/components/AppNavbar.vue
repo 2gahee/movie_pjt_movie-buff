@@ -29,7 +29,7 @@ import { RouterLink } from 'vue-router'
             <RouterLink to="/now-on" class="nav-link">Now On</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/articles" class="nav-link">Community</RouterLink>
+            <RouterLink to="/community" class="nav-link">Community</RouterLink>
          </li>
         </ul>
 
