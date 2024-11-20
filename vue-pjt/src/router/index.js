@@ -5,6 +5,7 @@ import NewAccountView from '@/views/NewAccountView.vue'
 import LoginView from '@/views/LoginView.vue' 
 import ArticleCreateView from '@/views/ArticleCreateView.vue'
 import { useMovieStore } from '@/stores/counter'
+import CurrentListView from '@/views/CurrentListView.vue'
 
 
 
@@ -37,7 +38,12 @@ const router = createRouter({
       path:'/community/create/',
       component: ArticleCreateView,
       name: 'createArticle'
-    }
+    },
+    {
+      path:'/now-on',
+      component: CurrentListView,
+      name: 'NowOns'
+    },
   ],
 })
 

@@ -165,3 +165,4 @@ ACCOUNT_EMAIL_VERIFICATION = "none"  # 이메일 인증을 비활성화
 ACCOUNT_AUTHENTICATED_REDIRECT_URL = '/'  # 인증 후 리다이렉트할 URL
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 이메일을 콘솔로 출력
 
+TMDB_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWQyMTIxZTU4ZTNkZTI0MTMzOWMwZWY1NzU4MzM2MyIsIm5iZiI6MTczMjA4MjA3NC41NDkyMjksInN1YiI6IjY3MjMzNDQxMjhiZDk2NmM5ZTY3MWFkNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bWIpTdyIGOq8ZiwvuIQru_M5CuRnHhT7omwp1t5zDBU'
