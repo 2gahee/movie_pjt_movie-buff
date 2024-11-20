@@ -1,10 +1,25 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
+
+
+
 export const useMovieStore = defineStore('movie', () => {
   const articles = ref([])
   const API_URL = 'http://127.0.0.1:8000'
   const token = ref(null)
+  const isLogin = computed(() => {
+    if (token.value === null) {
+      return false
+    } else {
+      return true
+    }
+  })
+  const router = useRouter()
+
+
+
   const getArticles = function () {
     axios({
       method: 'get',
@@ -83,5 +98,5 @@ const logIn = function (payload) {
 
 
 
-  return { articles, API_URL, getArticles, signUp, logIn, token }
+  return { articles, API_URL, getArticles, signUp, logIn, token, isLogin }
 })
