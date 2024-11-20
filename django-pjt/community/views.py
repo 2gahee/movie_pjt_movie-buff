@@ -11,9 +11,11 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from .serializers import ArticleListSerializer, ArticleSerializer
 from .models import Article
 
-@api_view(["GET", "POST"])
+@api_view(["GET", "POST", "OPTIONS"])
 @permission_classes([IsAuthenticated])
 def article_list(request):
+    # if request.method == 'OPTIONS':
+    #     return Response(status=200)  # Preflight 요청 성공 처리
     if request.method == "GET":
         articles = get_list_or_404(Article)
         serializer = ArticleListSerializer(articles, many=True)
@@ -31,4 +33,6 @@ def article_detail(request, article_pk):
     if request.method == "GET":
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
+    
+
     

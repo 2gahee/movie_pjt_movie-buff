@@ -12,12 +12,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td class="title"><a>첫글</a></td>
-                <td class="hashtag">#java</td>
-                <td class="user-id">Uno</td>
+            <tr v-for="article in articleList" :key="article.pk">
+                <td class="title"><a>{{article.title}}</a></td>
+                <td class="hashtag">{{article.content}}</td>
+                <td class="user-id">{{article.user_id}}</td>
                 <td class="created-at">
-                    <time>2022-01-01</time>
+                    <time>{{article.created_at}}</time>
                 </td>
             </tr>
             </tbody>
@@ -26,11 +26,15 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import { useMovieStore } from '@/stores/counter';
 const store = useMovieStore()
+const articleList = ref([])
 onMounted(() => {
     store.getArticles()
+})
+watchEffect(() => {
+    articleList.value = store.articles;
 })
 </script>
 
