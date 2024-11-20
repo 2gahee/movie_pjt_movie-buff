@@ -15,5 +15,27 @@ export const useMovieStore = defineStore('movie', () => {
     })
     .catch(err => console.log(err))
   }
-  return { articles, API_URL, getArticles }
+
+const signUp = function (payload) {
+  const { username, password1, password2, nickname, email } = payload
+
+  axios({
+    method:'post',
+    url: `${API_URL}/accounts/signup/`,
+    data: {
+      username, password1, password2, nickname, email
+    }
+  })
+    .then((res) => {
+      console.log(res)
+      console.log('회원가입 성공')
+      const password = password1
+      logIn({ username, password })
+    })
+    .catch((error) => {
+      console.error(error.response)
+  })
+}
+
+  return { articles, API_URL, getArticles, signUp }
 })
