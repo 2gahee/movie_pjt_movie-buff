@@ -159,5 +159,5 @@ const movieLike = function(id, event) {
 }
 }
 
-  return { articles, API_URL, getArticles, signUp, logIn, token, getNowOns, isLogin, nowOns, getMovieDetails, movieLike}
+  return { articles, API_URL, getArticles, signUp, logIn, logOut, token, getNowOns, isLogin, nowOns, getMovieDetails, movieLike}
 })
