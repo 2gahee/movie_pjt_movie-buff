@@ -1,27 +1,32 @@
 <template>
     <div>
-        <p v-for="movie in nowOnList">{{ movie.title }}</p>
-        <MovieCard />
+        <h1>Now On</h1>
+        <div class="MovieCardContainer">
+        <MovieCard v-for="movie in nowOnList" :key="movie.id" @click="watchDetail(movie.id)" :movie="movie"/>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue';
-import { useMovieStore } from '@/stores/counter';
-import MovieCard from '@/components/MovieCard.vue';
-// import { useRouter } from 'vue-router'
-// const router = useRouter()
+import { computed, onMounted } from 'vue'
+import { useMovieStore } from '@/stores/counter'
+import MovieCard from '@/components/MovieCard.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const store = useMovieStore()
-const nowOnList = ref([])
-onMounted(() => {
-    store.getNowOns()
+
+onMounted(async function() {
+    await store.getNowOns()
 })
-watchEffect(() => {
-    nowOnList.value = store.nowOns;
-    console.log(nowOnList.value)
-})
+const nowOnList = computed(() => store.nowOns)
+const watchDetail = function(id) {
+    router.push({name:'detail', params: {id}})
+}
 </script>
 
 <style scoped>
-
+.MovieCardContainer{
+    display: flex;
+    flex-wrap: wrap;
+}
 </style>

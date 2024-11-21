@@ -7,6 +7,7 @@ import ArticleCreateView from '@/views/ArticleCreateView.vue'
 import { useMovieStore } from '@/stores/counter'
 import CurrentListView from '@/views/CurrentListView.vue'
 import ArticleDetailView from '@/views/ArticleDetailView.vue'
+import MovieDetailView from '@/views/MovieDetailView.vue'
 
 
 
@@ -49,6 +50,11 @@ const router = createRouter({
       path:'/community/:id',
       component: ArticleDetailView,
       name: 'articleDetail'
+    },
+    {
+      path:'/movies/:id/',
+      component: MovieDetailView,
+      name: 'detail'
     },
   ],
 })
