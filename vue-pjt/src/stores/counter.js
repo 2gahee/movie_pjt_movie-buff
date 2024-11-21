@@ -94,6 +94,7 @@ const logIn = function (payload) {
     .then((res) => {
       token.value = res.data.key
       localStorage.setItem('token', token.value) // 로그인 시 토큰 저장
+      localStorage.setItem('username', username)
       router.push({ name: 'Home' })
       console.log(res.data)
       console.log('로그인 성공')
@@ -158,6 +159,7 @@ const movieLike = function(id, event) {
     throw err
 }
 }
+
 
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token, getNowOns, isLogin, nowOns, getMovieDetails, movieLike}
 })

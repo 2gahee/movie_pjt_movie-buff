@@ -28,42 +28,10 @@
     <!-- 댓글 -->
     <div class="card mt-3">
         <!-- 댓글등록 -->
-        <div class="card-body">
-            <form action="/reply/save" method="post">
-                <textarea class="form-control" rows="2" name="comment"></textarea>
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-outline-primary mt-1">댓글등록</button>
-                </div>
-            </form>
-        </div>
+         <CommentCreate :id="id" @add-comment="addComment"/>
+      
         <!-- 댓글목록 -->
-
-        <div class="card-footer">
-            <b>댓글리스트</b>
-        </div>
-        <div class="list-group">
-
-            <!-- 댓글아이템 -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex">
-                    <div class="px-1 me-1 bg-primary text-white rounded">cos</div>
-                    <div>댓글 내용입니다</div>
-                </div>
-                <!-- <form action="/reply/1/delete" method="post">
-                    <button class="btn">🗑</button>
-                </form> -->
-            </div>
-            <!-- 댓글아이템 -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex">
-                    <div class="px-1 me-1 bg-primary text-white rounded">ssar</div>
-                    <div>댓글 내용입니다</div>
-                </div>
-                <!-- <form action="/reply/1/delete" method="post">
-                    <button class="btn">🗑</button>
-                </form> -->
-            </div>
-        </div>
+         <CommentList :comments="comments" :id="id" @update:comments="updateComments"/>       
     </div>
 </div>
 
@@ -75,15 +43,32 @@ import axios from 'axios'
 import { ref, onMounted } from 'vue';
 import { useMovieStore } from '@/stores/counter';
 import { useRoute } from 'vue-router'
+import CommentList from '@/components/CommentList.vue';
+import CommentCreate from '@/components/CommentCreate.vue';
+
 const route = useRoute()
 const store = useMovieStore()
+
 const article = ref(null)
+const comments = ref([]); // 댓글 리스트 상태
+const id = route.params.id
+
+// 새 댓글을 추가하는 함수
+const addComment = (newComment) => {
+    comments.value.push(newComment); // 새 댓글을 리스트에 추가
+};
+
+
+const updateComments = (newComments) => {
+  comments.value = newComments;
+};
+
 
 // DetailView가 마운트되기전에 DRF로 단일 게시글 조회를 요청 후 응답데이터를 저장
 onMounted(() => {
   axios({
     method: 'get',
-    url: `${store.API_URL}/community/${route.params.id}/`,
+    url: `${store.API_URL}/community/${id}/`,
     headers: {
       Authorization: `Token ${store.token}` // 인증 토큰 추가
     }
@@ -91,11 +76,16 @@ onMounted(() => {
     .then((res) => {
       console.log(res.data)
       article.value = res.data
+      comments.value = res.data.comment_set || []; // 댓글 데이터를 받아 저장(존재하지 않으면 빈 배열)
+
     })
     .catch((err) => {
       console.log(err)
     })
 })
+
+
+
 
 </script>
 
