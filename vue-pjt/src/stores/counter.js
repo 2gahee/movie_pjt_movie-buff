@@ -9,6 +9,7 @@ export const useMovieStore = defineStore('movie', () => {
   const articles = ref([])
   const nowOns = ref([])
   const API_URL = 'http://127.0.0.1:8000'
+  const likedMovies = ref([])
   // const token = ref(null)
 
   // const isLogin = computed(() => {
@@ -112,10 +113,14 @@ const logOut = function () {
 
 const getNowOns = async function () {
   try {
+    const headers = token.value
+    ? { Authorization: `Token ${token.value}` } // 로그인 상태
+    : {}; // 비로그인 상태
+    
     const res = await axios({
       method: 'get',
       url: `${API_URL}/movies/now-on/`,
-      headers: { Authorization: `Token ${token.value}` },
+      headers: headers,
       withCredentials: true
     })
     nowOns.value = res.data
@@ -123,11 +128,11 @@ const getNowOns = async function () {
     console.error("현재 상영작 정보를 가져오는 중 오류:", error)
 }}
 
-const getMovieDetails = async function(id) {
+const getMovieDetails = async function(movieId) {
   try {
       const res = await axios({
           method: 'get',
-          url: `${API_URL}/movies/${id}/`,
+          url: `${API_URL}/movies/${movieId}/`,
           headers: {
               Authorization: `Token ${token.value}`,
           },
@@ -159,5 +164,18 @@ const movieLike = function(id, event) {
 }
 }
 
-  return { articles, API_URL, getArticles, signUp, logIn, logOut, token, getNowOns, isLogin, nowOns, getMovieDetails, movieLike}
+const getLikedMovies = async function () {
+  try {
+    const res = await axios({
+      method: 'get',
+      url: `${API_URL}/movies/liked_movies/`,
+      headers: { Authorization: `Token ${token.value}` },
+      withCredentials: true
+    })
+    likedMovies.value = res.data.liked_list
+  } catch (error) {
+    console.error("사용자 영화정보 가져오는 중 오류:", error)
+}}
+  return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
+    getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken, getLikedMovies, likedMovies}
 })

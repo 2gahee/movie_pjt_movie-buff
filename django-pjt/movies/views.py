@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 # from rest_framework.decorators import permission_classes
 # from rest_framework.permissions import IsAuthenticated
@@ -11,9 +11,11 @@ import requests
 from rest_framework.exceptions import NotFound
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from rest_framework.permissions import AllowAny
 # Create your views here.
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def movie_list(request):
     url = "https://api.themoviedb.org/3/movie/popular?language=ko-KOR&page=1&region=KR"
 
@@ -30,6 +32,7 @@ def movie_list(request):
     return Response(now_ons)
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def nowon(request):
     url = "https://api.themoviedb.org/3/movie/now_playing?language=ko-KOR&region=KR"
 
@@ -46,6 +49,7 @@ def nowon(request):
     return Response(movies)
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def movieDetail(request, movieId):
     url = f'https://api.themoviedb.org/3/movie/{movieId}?language=ko-KOR'
     headers = {
@@ -59,7 +63,7 @@ def movieDetail(request, movieId):
     print(data)
     return Response(data)
 
-@login_required
+# @login_required
 @api_view(["OPTIONS", "POST"])
 def movieLike(request, movieId):
     user = request.user
@@ -70,6 +74,17 @@ def movieLike(request, movieId):
         else:
             UserMovie.objects.create(user=user, movie=movieId)
         return Response({"status": "success"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(["GET"])
+def likeMovieList(request):
+    user = request.user
+    try:
+        user_movie = UserMovie.objects.filter(user=user)
+        liked_list = [um.movie for um in user_movie]
+        print(liked_list)
+        return Response({'liked_list': liked_list}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
