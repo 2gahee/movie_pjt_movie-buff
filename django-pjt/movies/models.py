@@ -15,7 +15,10 @@ class Movie(models.Model):
     release_date = models.DateField()
     now_playing = models.BooleanField()
     popularity = models.FloatField()
-    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
+    
+class UserMovie(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    movie = models.CharField(max_length=50)
 
 class Cinema(models.Model):
     company = models.CharField(max_length=50)

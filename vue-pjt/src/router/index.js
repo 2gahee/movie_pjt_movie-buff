@@ -6,6 +6,7 @@ import LoginView from '@/views/LoginView.vue'
 import ArticleCreateView from '@/views/ArticleCreateView.vue'
 import { useMovieStore } from '@/stores/counter'
 import CurrentListView from '@/views/CurrentListView.vue'
+import MovieDetailView from '@/views/MovieDetailView.vue'
 
 
 
@@ -41,6 +42,11 @@ const router = createRouter({
       path:'/now-on',
       component: CurrentListView,
       name: 'NowOns'
+    },
+    {
+      path:'/movies/:id/',
+      component: MovieDetailView,
+      name: 'detail'
     },
   ],
 })

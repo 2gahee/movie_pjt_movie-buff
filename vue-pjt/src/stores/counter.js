@@ -97,23 +97,54 @@ const logIn = function (payload) {
 }
 
 
-const getNowOns = function () {
-  axios({
-    method: 'get',
-    url: `${API_URL}/movies/now-on/`,
-    headers: {
-      Authorization: `Token ${token.value}`
-      // Accept: 'application/json'
-    },
-    withCredentials: true
-  })
-  .then(res => {
+const getNowOns = async function () {
+  try {
+    const res = await axios({
+      method: 'get',
+      url: `${API_URL}/movies/now-on/`,
+      headers: { Authorization: `Token ${token.value}` },
+      withCredentials: true
+    })
     nowOns.value = res.data
-    console.log(res.data)
-  })
-  .catch(err => console.log(err))
+  } catch (error) {
+    console.error("현재 상영작 정보를 가져오는 중 오류:", error)
+}}
+
+const getMovieDetails = async function(id) {
+  try {
+      const res = await axios({
+          method: 'get',
+          url: `${API_URL}/movies/${id}/`,
+          headers: {
+              Authorization: `Token ${token.value}`,
+          },
+          withCredentials: true,
+      });
+      console.log('API 응답');
+      return res.data
+  } catch (err) {
+      console.error("API 요청 중 오류 발생:", err)
+      throw err
+  }
 }
 
+const movieLike = function(id, event) {
+  try {
+    event.preventDefault()
+    axios({
+      method: 'post',
+      url: `${API_URL}/movies/${id}/like/`,
+      headers: {
+          Authorization: `Token ${token.value}`,
+      },
+      withCredentials: true,
+    })
+    console.log('좋아요 토글');
+} catch (err) {
+    console.error("좋아요 토글 중 오류 발생:", err)
+    throw err
+}
+}
 
-  return { articles, API_URL, getArticles, signUp, logIn, token, getNowOns, isLogin, nowOns }
+  return { articles, API_URL, getArticles, signUp, logIn, token, getNowOns, isLogin, nowOns, getMovieDetails, movieLike}
 })
