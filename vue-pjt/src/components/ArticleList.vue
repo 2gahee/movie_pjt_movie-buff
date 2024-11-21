@@ -1,5 +1,4 @@
 <template>
-
     <div class="btn-table">
     <button @click="goCreate" type="button" class="btn btn-dark">작성하기</button>
     
@@ -7,16 +6,17 @@
         <thead>
             <tr>
                 <th class="title col-3"><a>제목</a></th>
-                <th class="hashtag col-4"><a>내용</a></th>
-                <th class="user-id"><a>작성자</a></th>
+                <th class="content col-4"><a>내용</a></th>
+                <th class="username"><a>작성자</a></th>
                 <th class="created-at"><a>작성일</a></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="article in articleList" :key="article.pk">
-                <td class="title"><a>{{article.title}}</a></td>
-                <td class="hashtag">{{article.content}}</td>
-                <td class="user-id">{{article.user.username}}</td>
+            <tr v-for="article in articleList" :key="article.id">
+                
+                <td class="title"> <RouterLink :to="{ name: 'articleDetail', params: { id: article.id } }">{{article.title}}</RouterLink></td>
+                <td class="content">{{article.content}}</td>
+                <td class="username">{{article.user.username}}</td>
                 <td class="created-at">
                     <time>{{article.created_at}}</time>
                 </td>

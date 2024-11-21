@@ -1,5 +1,11 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+
+import { useMovieStore } from '../stores/counter' 
+import { computed } from 'vue'
+
+const movieStore = useMovieStore()
+const isLogin = computed(() => movieStore.isLogin) // 로그인 상태
 </script>
 
 <template>
@@ -33,17 +39,32 @@ import { RouterLink } from 'vue-router'
          </li>
         </ul>
 
+
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item2">
-            <RouterLink to="/mypage" class="nav-link">MyPage</RouterLink>
-          </li>
-          <li class="nav-item2">
-            <RouterLink to="/login" class="nav-link">LogIn</RouterLink>
-          </li>
-          <li class="nav-item2">
-            <RouterLink to="/signup" class="nav-link">SignUp</RouterLink>
-          </li>
+          <!-- 로그인 여부에 따라 조건부 렌더링 -->
+          <template v-if="isLogin">
+            <li class="nav-item2">
+              <RouterLink to="/mypage" class="nav-link">MyPage</RouterLink>
+            </li>
+            <li class="nav-item2">
+              <button class="btn btn-link nav-link" @click="movieStore.logOut">LogOut</button>
+            </li>
+          </template>
+          <template v-else>
+            <li class="nav-item2">
+              <RouterLink to="/login" class="nav-link">LogIn</RouterLink>
+            </li>
+            <li class="nav-item2">
+              <RouterLink to="/signup" class="nav-link">SignUp</RouterLink>
+            </li>
+          </template>
         </ul>
+
+
+
+
+
+
       </div>
     </div>
   </nav>

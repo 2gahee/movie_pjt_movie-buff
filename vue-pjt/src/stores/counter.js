@@ -9,17 +9,23 @@ export const useMovieStore = defineStore('movie', () => {
   const articles = ref([])
   const nowOns = ref([])
   const API_URL = 'http://127.0.0.1:8000'
-  const token = ref(null)
-  const isLogin = computed(() => {
-    if (token.value === null) {
-      return false
-    } else {
-      return true
-    }
-  })
+  // const token = ref(null)
+
+  // const isLogin = computed(() => {
+  //   if (token.value === null) {
+  //     return false
+  //   } else {
+  //     return true
+  //   }
+  // })
+
+  // 페이지 새로고침 시 토큰 복원
+  const savedToken = localStorage.getItem('token') || null
+  const token = ref(savedToken)
+
+  const isLogin = computed(() => token.value !== null)
+
   const router = useRouter()
-
-
 
   const getArticles = function () {
     axios({
@@ -87,13 +93,20 @@ const logIn = function (payload) {
   })
     .then((res) => {
       token.value = res.data.key
-      router.push({ name: 'Articles' })
+      localStorage.setItem('token', token.value) // 로그인 시 토큰 저장
+      router.push({ name: 'Home' })
       console.log(res.data)
       console.log('로그인 성공')
     })
     .catch((err) => {
       console.log(err)
     })
+}
+
+const logOut = function () {
+  token.value = null
+  localStorage.removeItem('token') // 로그아웃 시 토큰 삭제
+  router.push({ name: 'Home' })
 }
 
 

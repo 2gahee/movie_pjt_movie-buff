@@ -6,6 +6,7 @@ import LoginView from '@/views/LoginView.vue'
 import ArticleCreateView from '@/views/ArticleCreateView.vue'
 import { useMovieStore } from '@/stores/counter'
 import CurrentListView from '@/views/CurrentListView.vue'
+import ArticleDetailView from '@/views/ArticleDetailView.vue'
 
 
 
@@ -43,6 +44,11 @@ const router = createRouter({
       path:'/now-on',
       component: CurrentListView,
       name: 'NowOns'
+    },
+    {
+      path:'/community/:id',
+      component: ArticleDetailView,
+      name: 'articleDetail'
     },
   ],
 })
