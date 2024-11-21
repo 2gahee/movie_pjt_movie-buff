@@ -8,6 +8,7 @@ import { useMovieStore } from '@/stores/counter'
 import CurrentListView from '@/views/CurrentListView.vue'
 import ArticleDetailView from '@/views/ArticleDetailView.vue'
 import MovieDetailView from '@/views/MovieDetailView.vue'
+import MyPageView from '@/views/MyPageView.vue'
 
 
 
@@ -56,6 +57,11 @@ const router = createRouter({
       component: MovieDetailView,
       name: 'detail'
     },
+    {
+      path:'/mypage',
+      component: MyPageView,
+      name: 'myPage'
+    }
   ],
 })
 

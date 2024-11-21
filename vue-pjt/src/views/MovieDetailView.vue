@@ -2,12 +2,12 @@
     <div>
     <div v-if="movie">
         <div class="whole-container">
-            <div class="img-container">
-        <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="img">
-        <button v-if="true" @click="likeToggle(movie.id, $event)" type="button" class="btn btn-primary">좋아요</button>
-        <button v-else type="button" class="btn btn-secondary">좋아요 취소</button>
-        
-            </div>
+        <div class="img-container">
+        <img :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`" alt="img">
+        <button v-if="store.token && (!likedList.length || (likedList.length && !likedList.includes(movie.id)))" @click="likeToggle(movie.id, $event)" type="button" class="btn btn-secondary">좋아요 취소</button>
+        <button v-else-if="store.token && likedList.includes(movie.id)" @click="likeToggle(movie.id, $event)" type="button" class="btn btn-primary">좋아요</button>
+        <p>{{ likedList }}</p>
+        </div>
         
          <div class="movie-info-container">
             <!-- <p>{{ movie.title }}</p> -->
@@ -18,7 +18,6 @@
             <p>{{ Math.floor(movie.runtime / 60) }}시간 {{ movie.runtime % 60 }}분</p>
             <p>{{ Math.round(movie.vote_average * 10) / 10 }}점 ({{ movie.vote_count }}명)</p>
             <p>{{ movie.overview }}</p>
-            
          </div>
         </div> 
     </div>
@@ -31,13 +30,15 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import { useMovieStore } from '@/stores/counter'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
+
 const store = useMovieStore()
 const route = useRoute()
 const movie = ref(null)
 const genreString = ref('')
+
+const movieId = Number(route.params.id)
 onMounted(async () => {
-    const movieId = Number(route.params.id)
     console.log("movieId:", movieId)
     if (!movieId || isNaN(movieId)) {
         console.error("유효하지 않은 movieId입니다.")
@@ -46,6 +47,7 @@ onMounted(async () => {
 
     try {
         movie.value = await store.getMovieDetails(movieId);
+        await store.getLikedMovies()
         console.log(movie.value);
         genreString.value = movie.value.genres.map(genre => genre.name).join(" / ")
     } catch (error) {
@@ -54,7 +56,11 @@ onMounted(async () => {
 })
 const likeToggle = function(movieId, event) {
     store.movieLike(movieId, event)
-}
+};
+const likedList = computed(() => store.likedMovies)
+// watch(isLiked, (newValue) => {
+//   console.log('isLiked:', newValue);
+// })
 </script>
 
 <style scoped>
