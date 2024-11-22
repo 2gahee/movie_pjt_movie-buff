@@ -83,8 +83,24 @@ def likeMovieList(request):
     try:
         user_movie = UserMovie.objects.filter(user=user)
         liked_list = [um.movie for um in user_movie]
-        print(liked_list)
-        return Response({'liked_list': liked_list}, status=status.HTTP_200_OK)
+        movies_data = []
+        for movie_id in liked_list:
+            url = f'https://api.themoviedb.org/3/movie/{movie_id}?language=ko-KOR'
+            headers = {
+                "accept": "application/json",
+                "Authorization": f"Bearer {settings.TMDB_API_KEY}"
+            }
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                movie_data = response.json()
+                movies_data.append({
+                    "id": movie_data.get("id"),
+                    "title": movie_data.get("title"),
+                    "poster_path": movie_data.get("poster_path")
+                })
+            else:
+                print(f"Failed to fetch movie data for movie_id {movie_id}")
+        return Response({'liked_list': movies_data}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
