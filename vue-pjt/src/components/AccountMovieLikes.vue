@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useMovieStore } from '@/stores/counter'
 import MovieCard from '@/components/MovieCard.vue'
 import { useRouter } from 'vue-router'

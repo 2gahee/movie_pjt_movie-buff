@@ -9,6 +9,7 @@ import CurrentListView from '@/views/CurrentListView.vue'
 import ArticleDetailView from '@/views/ArticleDetailView.vue'
 import MovieDetailView from '@/views/MovieDetailView.vue'
 import MyPageView from '@/views/MyPageView.vue'
+import MovieListView from '@/views/MovieListView.vue'
 
 
 
@@ -56,6 +57,11 @@ const router = createRouter({
       path:'/community/:id',
       component: ArticleDetailView,
       name: 'articleDetail'
+    },
+    {
+      path:'/movies',
+      component: MovieListView,
+      name: 'movies'
     },
     {
       path:'/movies/:id/',

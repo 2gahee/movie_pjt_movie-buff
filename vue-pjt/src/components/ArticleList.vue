@@ -1,7 +1,7 @@
 <template>
     <div class="btn-table">
+    <button @click="goTotalList" type="button" class="btn btn-dark">전체 목록</button>
     <button @click="goCreate" type="button" class="btn btn-dark">작성하기</button>
-    
     <table class="table table-hover table-striped text-center">
         <thead>
             <tr>
@@ -12,7 +12,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="article in articleList" :key="article.id">
+            <tr v-for="article in props.articleList" :key="article.id">
                 
                 <td class="title"> <RouterLink :to="{ name: 'articleDetail', params: { id: article.id } }">{{article.title}}</RouterLink></td>
                 <td class="content">{{article.content}}</td>
@@ -27,20 +27,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue';
-import { useMovieStore } from '@/stores/counter';
+
+
 import { useRouter } from 'vue-router'
-const router = useRouter()
+import { useMovieStore } from '@/stores/counter';
 const store = useMovieStore()
-const articleList = ref([])
-onMounted(() => {
-    store.getArticles()
-})
-watchEffect(() => {
-    articleList.value = store.articles;
+const router = useRouter()
+
+const props = defineProps({
+    articleList : Array
 })
 const goCreate = function() {
     router.push({path:'/community/create/'})
+}
+const goTotalList = function() {
+    store.getArticles()
 }
 </script>
 
