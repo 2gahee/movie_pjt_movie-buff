@@ -1,19 +1,41 @@
-<template>
+<!-- <template>
   <div>
     <h1>{{ isEditMode ? "게시글 수정" : "게시글 작성" }}</h1>
     <form @submit.prevent="submitArticle">
       <div>
         <label for="title">제목 :</label>
-        <input type="text" id="title" v-model.trim="title" />
+        <input type="text" id="title" placeholder="제목을 입력하세요" v-model.trim="title" />
       </div>
       <div>
         <label for="content">내용 :</label>
-        <textarea id="content" v-model.trim="content"></textarea>
+        <textarea id="content" placeholder="내용을 입력하세요" v-model.trim="content"></textarea>
       </div>
       <input type="submit" :value="isEditMode ? '수정 완료' : '작성 완료'" />
     </form>
   </div>
+</template> -->
+
+<template>
+  <div id="ArticleCreate">
+    <div class="description">
+    <h1>{{ isEditMode ? "게시글 수정" : "게시글 작성" }}</h1>
+    </div>
+    <form @submit.prevent="submitArticle">
+      <table> 
+        <thead>
+          <tr><td class="header">제목</td></tr>
+        </thead>
+        <tbody>
+          <tr><td><input type="text" id="title" placeholder="제목을 입력하세요" v-model.trim="title"/></td></tr>
+          <tr><td class="header">내용</td></tr>
+          <tr><td><textarea id="content" placeholder="내용을 입력하세요" v-model.trim="content"></textarea></td></tr>
+          <tr><td><input type="submit" :value="isEditMode ? '수정 완료' : '작성 완료'" /></td></tr>
+        </tbody>
+      </table> 
+    </form>
+  </div>
 </template>
+
 
 
 <script setup>
@@ -116,6 +138,54 @@
 </script>
   
 <style>
-  
+.description{
+    margin-top: 2rem; 
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    margin: auto;
+}
+#ArticleCreate input[type="text"] {
+    border: 1.5px rgb(68, 136, 244) solid;
+    width: 500px;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+textarea {
+    border: 1.5px rgb(68, 136, 244) solid;
+    width: 500px;
+    height: 400px;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-top: 10px;
+    resize: none;
+}
+.header {
+    height: 30px;
+}
+input[type="submit"] {
+    width: 100px;
+    height: 40px;
+    font-size: 15px;
+    border: 0;
+    outline: 1.5px rgb(68, 136, 244) solid;
+    border-radius: 5px;
+    padding-left: 10px;
+    background-color: rgb(164, 199, 255);
+}
+input[type="submit"]:active {
+    width: 100px;
+    height: 40px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 5px;
+    outline: 1.5px rgb(27, 76, 155) solid;
+    padding-left: 10px;
+    background-color: rgb(68, 136, 244);
+}
 </style>
   

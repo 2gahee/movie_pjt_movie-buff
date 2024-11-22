@@ -30,5 +30,6 @@ const watchDetail = function(id) {
 .MovieCardContainer{
     display: flex;
     overflow: auto;
+    
 }
 </style>
