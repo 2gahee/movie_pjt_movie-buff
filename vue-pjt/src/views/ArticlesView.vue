@@ -8,7 +8,7 @@
     <div class="row" id="search-box">
         <div class="card card-margin search-form">
             <div class="card-body p-0">
-                <form id="search-form">
+                <form id="search-form" @submit="searchArticles">
                     <div class="row">
                         <div class="col-12">
                             <div class="search-container">
@@ -17,8 +17,6 @@
                                         <option>제목</option>
                                         <option>내용</option>
                                         <option>작성자</option>
-                                        
-                                      
                                     </select>
                                 <label for="search-value" hidden>검색어</label>
                                     <input type="text" placeholder="검색어를 입력해주세요" class="form-control" id="search-value"
@@ -40,11 +38,8 @@
         </div>
     </div>
 
-
-  
     <ArticleList />
 
-  
     <div class="row">
         <nav id="pagination" aria-label="Page navigation">
             <ul class="pagination justify-content-center">

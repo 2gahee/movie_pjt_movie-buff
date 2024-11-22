@@ -15,14 +15,23 @@ def article_list(request):
     # if request.method == 'OPTIONS':
     #     return Response(status=200)  # Preflight 요청 성공 처리
     if request.method == "GET":
-        articles = get_list_or_404(Article)
+        title_query = request.GET.get('title', '')
+        username_query = request.GET.get('username', '')
+        content_query = request.GET.get('content', '')
+        if title_query:
+            articles = Article.objects.filter(title__icontains=title_query)
+        elif username_query:
+            articles = Article.objects.filter(user__username__icontains=username_query)
+        elif content_query:
+            articles = Article.objects.filter(content__icontains=content_query)
+        else:  # 검색 조건이 없으면 전체 리스트 반환
+            articles = Article.objects.all()
         serializer = ArticleListSerializer(articles, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
         serializer = ArticleSerializer(data=request.data, context={'request': request})
         if serializer.is_valid(raise_exception=True):
             serializer.save(user_id=request.user.id)
-            # serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(["GET", "DELETE", "PUT"])

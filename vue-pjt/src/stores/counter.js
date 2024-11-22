@@ -10,6 +10,7 @@ export const useMovieStore = defineStore('movie', () => {
   const nowOns = ref([])
   const API_URL = 'http://127.0.0.1:8000'
   const likedMovies = ref([])
+  const myArticles = ref([])
   // const token = ref(null)
 
   // const isLogin = computed(() => {
@@ -28,23 +29,25 @@ export const useMovieStore = defineStore('movie', () => {
 
   const router = useRouter()
 
-  const getArticles = function () {
+  const getArticles = function (field = '', keyword = '') {
+    const url = field && keyword
+      ? `${API_URL}/community?${field}=${encodeURIComponent(keyword)}`
+      : `${API_URL}/community`; // 기본값은 전체 리스트 가져오기
     axios({
       method: 'get',
-      url: `${API_URL}/community`,
+      url: url,
       headers: {
         Authorization: `Token ${token.value}`
-        // Accept: 'application/json'
       },
       withCredentials: true
     })
     .then(res => {
       articles.value = res.data
       console.log(res.data)
-      
     })
     .catch(err => console.log(err))
-  }
+  };
+  
 
 const signUp = function (payload) {
   const { username, password1, password2, nickname, email } = payload
@@ -165,7 +168,6 @@ const movieLike = function(id, event) {
 }
 }
 
-
 const getLikedMovies = async function () {
   try {
     const res = await axios({
@@ -178,6 +180,8 @@ const getLikedMovies = async function () {
   } catch (error) {
     console.error("사용자 영화정보 가져오는 중 오류:", error)
 }}
+
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
-    getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken, getLikedMovies, likedMovies}
+    getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
+    getLikedMovies, likedMovies}
 })
