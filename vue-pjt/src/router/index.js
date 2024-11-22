@@ -38,9 +38,14 @@ const router = createRouter({
       
     },
     {
-      path:'/community/create/',
+      path:'/community/create/', // 게시글 작성 
       component: ArticleCreateView,
       name: 'createArticle'
+    },
+    {
+      path: '/community/:id/edit', // 게시글 수정, 수정 시 게시글 ID를 경로로 전달
+      component: ArticleCreateView,
+      name: 'editArticle',
     },
     {
       path:'/now-on',
