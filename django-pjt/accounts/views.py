@@ -16,3 +16,4 @@ def signup(request):
         serializer.save()
         return Response({'message': 'Signup successful!'}, status=201)
     return Response(serializer.errors, status=400)
+
