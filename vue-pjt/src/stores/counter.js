@@ -24,9 +24,13 @@ export const useMovieStore = defineStore('movie', () => {
   // 페이지 새로고침 시 토큰 복원
   const savedToken = localStorage.getItem('token') || null
   const token = ref(savedToken)
-
-  const isLogin = computed(() => token.value !== null)
-
+  const userInfo = ref({
+    username: '',
+    nickname: '',
+    email: '',
+    password: '',
+  })  
+  const isLogin = computed(() => token.value !== null) // 로그인이 되어 있는지 확인
   const router = useRouter()
 
   const getArticles = function (field = '', keyword = '') {
@@ -47,7 +51,72 @@ export const useMovieStore = defineStore('movie', () => {
     })
     .catch(err => console.log(err))
   };
-  
+
+
+  // 회원 정보 가져오기 (로그인 후 호출)
+  const fetchUserInfo = async () => {
+    if (!token.value) {
+      console.log("로그인 되어 있지 않음")
+      return
+    }   
+    try {
+      const res = await axios({
+        method: 'get',
+        url: `${API_URL}/accounts/profile/`,
+        headers: {
+          Authorization: `Token ${token.value}`,
+        },
+        withCredentials: true,
+      })
+      
+      if (res.data) {
+        // 사용자 정보 저장
+        userInfo.value = {
+          username: res.data.username,
+          nickname: res.data.nickname,
+          email: res.data.email,
+          password: res.data.password,
+        }
+      }
+    } catch (err) {
+      console.error("사용자 정보 불러오기 오류:", err)
+    }
+  }
+
+
+   // 사용자 정보 수정
+   const updateUserInfo = async (updatedInfo) => {
+    if (!token.value) {
+      console.log("로그인 되어 있지 않음")
+      return
+    }
+
+    try {
+      const res = await axios({
+        method: 'put',
+        url: `${API_URL}/accounts/profile/`,  // 사용자 프로필 수정
+        data: updatedInfo,  // 수정된 사용자 정보
+        headers: {
+          Authorization: `Token ${token.value}`,
+        },
+        withCredentials: true,
+      })
+
+      if (res.data) {
+        // 성공적으로 수정되었으면, 수정된 정보를 userInfo에 업데이트
+        userInfo.value = {
+          username: res.data.username,
+          nickname: res.data.nickname,
+          email: res.data.email,
+          password: res.data.password,
+        }
+        console.log('사용자 정보가 성공적으로 수정되었습니다.')
+      }
+    } catch (err) {
+      console.error("사용자 정보 수정 오류:", err)
+    }
+  }
+
 
 const signUp = function (payload) {
   const { username, password1, password2, nickname, email } = payload
@@ -187,5 +256,5 @@ const getLikedMovies = async function () {
 
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
     getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
-    getLikedMovies, likedMovies}
+    getLikedMovies, likedMovies, userInfo, fetchUserInfo, updateUserInfo }
 })
