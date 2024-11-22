@@ -3,23 +3,22 @@
     <div class="description">
         <h1>게시판</h1>
     </div>
- 
    
     <div class="row" id="search-box">
         <div class="card card-margin search-form">
             <div class="card-body p-0">
-                <form id="search-form" @submit="searchArticles">
+                <form id="search-form" @submit.prevent="searchArticles">
                     <div class="row">
                         <div class="col-12">
                             <div class="search-container">
                                 <label for="search-type" hidden>검색 유형</label>
                                     <select class="form-control" id="search-type" name="searchType">
-                                        <option>제목</option>
-                                        <option>내용</option>
-                                        <option>작성자</option>
+                                        <option value="title">제목</option>
+                                        <option value="content">내용</option>
+                                        <option value="username">작성자</option>
                                     </select>
                                 <label for="search-value" hidden>검색어</label>
-                                    <input type="text" placeholder="검색어를 입력해주세요" class="form-control" id="search-value"
+                                    <input v-model="query" type="text" placeholder="검색어를 입력해주세요" class="form-control" id="search-value"
                                            name="searchValue">
                                 <button type="submit" class="btn btn-base">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -38,7 +37,7 @@
         </div>
     </div>
 
-    <ArticleList />
+    <ArticleList :articleList="articleList"/>
 
     <div class="row">
         <nav id="pagination" aria-label="Page navigation">
@@ -55,15 +54,29 @@
     </div>
 </div>
         
-        
-	
-
 </template>
 
 <script setup>
-import {useRouter } from 'vue-router'
+import { ref, onMounted, watchEffect } from 'vue';
+import { useMovieStore } from '@/stores/counter';
+import { useRouter } from 'vue-router'
 import ArticleList from '@/components/ArticleList.vue';
+const store = useMovieStore()
 const router = useRouter();
+const articleList = ref([])
+const query = ref('')
+onMounted(() => {
+    store.getArticles()
+})
+const searchArticles = function() {
+    const field = document.querySelector('#search-type').value
+    store.getArticles(field, query.value)
+    query.value = ''
+}
+watchEffect(() => {
+    articleList.value = store.articles;
+})
+
 </script>
 
 <style scoped>

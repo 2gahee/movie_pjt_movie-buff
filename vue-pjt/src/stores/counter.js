@@ -150,9 +150,8 @@ const getMovieDetails = async function(movieId) {
   }
 }
 
-const movieLike = function(id, event) {
+const movieLike = function(id) {
   try {
-    event.preventDefault()
     axios({
       method: 'post',
       url: `${API_URL}/movies/${id}/like/`,
@@ -162,6 +161,11 @@ const movieLike = function(id, event) {
       withCredentials: true,
     })
     console.log('좋아요 토글');
+    if (likedMovies.value.includes(id)) {
+      likedMovies.value = likedMovies.value.filter(movieId => movieId !== id); // 좋아요 취소
+    } else {
+      likedMovies.value.push(id); // 좋아요 추가
+    }
 } catch (err) {
     console.error("좋아요 토글 중 오류 발생:", err)
     throw err
