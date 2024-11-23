@@ -10,6 +10,7 @@ import ArticleDetailView from '@/views/ArticleDetailView.vue'
 import MovieDetailView from '@/views/MovieDetailView.vue'
 import MyPageView from '@/views/MyPageView.vue'
 import MovieListView from '@/views/MovieListView.vue'
+import AccountEditView from '@/views/AccountEdit.View.vue'
 
 
 
@@ -72,6 +73,11 @@ const router = createRouter({
       path:'/mypage',
       component: MyPageView,
       name: 'myPage'
+    },
+    {
+      path:'/editprofile',
+      component: AccountEditView,
+      name:'accountEdit'
     }
     
   ],

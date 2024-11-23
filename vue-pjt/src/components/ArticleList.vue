@@ -1,6 +1,6 @@
 <template>
     <div class="btn-table">
-    <button @click="goTotalList" type="button" class="btn btn-dark">전체 목록</button>
+    <!-- <button @click="goTotalList" type="button" class="btn btn-dark">전체 목록</button> -->
     <button @click="goCreate" type="button" class="btn btn-dark">작성하기</button>
     <table class="table table-hover table-striped text-center">
         <thead>

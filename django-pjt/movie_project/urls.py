@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from accounts.views import Profile
+from accounts.views import ProfileUpdate
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('dj_rest_auth.urls')),
@@ -24,4 +25,5 @@ urlpatterns = [
     path('accounts/signup/', include('dj_rest_auth.registration.urls')),
     path('community/', include('community.urls')),
     path('movies/', include('movies.urls')),
+    path('accounts/profile/update/', ProfileUpdate.as_view(), name='profile-update'),
 ]

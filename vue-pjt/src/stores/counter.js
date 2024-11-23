@@ -85,7 +85,7 @@ export const useMovieStore = defineStore('movie', () => {
 
 
    // 사용자 정보 수정
-   const updateUserInfo = async (updatedInfo) => {
+   const updateUserProfile= async (updatedInfo) => {
     if (!token.value) {
       console.log("로그인 되어 있지 않음")
       return
@@ -94,29 +94,35 @@ export const useMovieStore = defineStore('movie', () => {
     try {
       const res = await axios({
         method: 'put',
-        url: `${API_URL}/accounts/profile/`,  // 사용자 프로필 수정
+        url: `${API_URL}/accounts/profile/update/`,  // 사용자 프로필 수정
         data: updatedInfo,  // 수정된 사용자 정보
         headers: {
           Authorization: `Token ${token.value}`,
         },
         withCredentials: true,
       })
-
-      if (res.data) {
-        // 성공적으로 수정되었으면, 수정된 정보를 userInfo에 업데이트
-        userInfo.value = {
-          username: res.data.username,
-          nickname: res.data.nickname,
-          email: res.data.email,
-          password: res.data.password,
-        }
-        console.log('사용자 정보가 성공적으로 수정되었습니다.')
-      }
-    } catch (err) {
-      console.error("사용자 정보 수정 오류:", err)
+       // 백엔드 응답 처리
+    if (res.data && res.data.success) {
+      console.log(res.data.message || "사용자 정보가 성공적으로 수정되었습니다.");
+      return { success: true, message: res.data.message };
+    } else {
+      console.error("알 수 없는 오류 발생");
+      return { success: false, errors: { unknown: "알 수 없는 오류 발생" } };
     }
-  }
+  } catch (err) {
+    console.error("사용자 정보 수정 오류:", err);
 
+    // 응답에서 오류 메시지 추출
+    if (err.response && err.response.data) {
+      return { success: false, errors: err.response.data.errors };
+    }
+
+    // 예외 처리
+    return { success: false, errors: { unknown: "서버와 통신할 수 없습니다." } };
+  }
+};
+
+     
 
 const signUp = function (payload) {
   const { username, password1, password2, nickname, email } = payload
@@ -256,5 +262,5 @@ const getLikedMovies = async function () {
 
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
     getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
-    getLikedMovies, likedMovies, userInfo, fetchUserInfo, updateUserInfo }
+    getLikedMovies, likedMovies, userInfo, fetchUserInfo, updateUserProfile}
 })
