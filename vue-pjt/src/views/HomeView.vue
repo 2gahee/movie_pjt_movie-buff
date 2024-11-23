@@ -2,7 +2,11 @@
         <div class="home-description">
             <h1>굿즈 기반 영화 추천</h1>
             <p>재고 물량이 임박한 영화부터 추천됩니다.</p>
-            <div v-if="bestRecommend" id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div v-if="bestRecommend" id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselAutoplaying" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                    <button v-for="(movie, index) in recommendList" type="button" data-bs-target="#carouselAutoplaying" :data-bs-slide-to=(index+1) ></button>
+                </div>
             <div class="carousel-inner">
                 <div class="carousel-item active" @click="watchDetail(bestRecommend.id)">
                 <img :src=imgString(bestRecommend) class="d-block w-100" alt="...">
@@ -17,11 +21,11 @@
                     </div>
                 </div>  
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>

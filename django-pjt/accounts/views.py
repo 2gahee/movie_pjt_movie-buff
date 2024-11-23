@@ -68,3 +68,4 @@ class Profile(APIView):
         }
 
         return Response(updated_data, status=status.HTTP_200_OK)
+
