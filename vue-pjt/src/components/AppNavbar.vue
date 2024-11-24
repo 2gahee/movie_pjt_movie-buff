@@ -11,7 +11,7 @@ const isLogin = computed(() => movieStore.isLogin) // 로그인 상태
 <template>
   <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" >
     <div class="container-fluid">
-      <RouterLink to="/" class="navbar-brand">로고</RouterLink>
+      <RouterLink to="/" class="navbar-brand"><img src="/images/logo2.png" alt="로고" class="navbar-logo" /></RouterLink>
       <button
         class="navbar-toggler" 
         type="button" 
@@ -72,5 +72,8 @@ const isLogin = computed(() => movieStore.isLogin) // 로그인 상태
 
 
 <style  scoped>
-
+.navbar-logo {
+  max-height: 50px; /* 로고의 최대 높이를 50px로 설정 */
+  height: auto;     /* 비율을 유지하며 크기 조정 */
+}
 </style>

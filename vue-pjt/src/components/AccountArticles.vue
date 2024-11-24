@@ -1,5 +1,5 @@
 <template>
-    <h2>My articles</h2>
+    <h2 class="articles-title">{{ store.userInfo.username }}님의 Articles</h2>
     <div class="btn-table">
     <button @click="goCreate" type="button" class="btn btn-dark">작성하기</button>
         <table class="table table-hover table-striped text-center">
@@ -75,6 +75,11 @@ const goCreate = function() {
 </script>
 
 <style scoped>
+.articles-title {
+  margin-top: 2rem;        
+  margin-left: 3rem;    
+}
+
 table {
  width:80%;
  margin: 0 auto;

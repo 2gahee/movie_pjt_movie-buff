@@ -1,6 +1,8 @@
 <template>
     <div>
+        <div class="description">
         <h1>My Activities</h1>
+        </div>
         <AccountArticles />
         <AccountMovieLikes />
         
@@ -15,5 +17,10 @@ import AccountMovieLikes from '@/components/AccountMovieLikes.vue'
 </script>
 
 <style scoped>
-
+.description{
+    margin-top: 2rem; 
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+}
 </style>

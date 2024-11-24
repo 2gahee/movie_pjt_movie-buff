@@ -1,5 +1,5 @@
 <template>
-   <h1>Account Info</h1>
+   <h2 class="accountinfo-title">{{ store.userInfo.username }}님의 AccountInfo</h2>
   <div class="mypage-container">
       <div class="profile-card">
           <div class="profile-header">
@@ -55,6 +55,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.accountinfo-title {
+  margin-top: 5rem;        
+  margin-left: 3rem; 
+  margin-bottom: 3rem;   
+}
+
 .mypage-container {
     max-width: 800px;
     margin: 2rem auto;
