@@ -34,7 +34,7 @@
         </div>
     </div>
         <div class="MovieCardContainer">
-        <MovieCard v-for="movie in movieList" :key="movie.id" @click="watchDetail(movie.id)" :movie="movie"/>
+        <MovieCard v-for="movie in movieList" :key="movie.movie_id" @click="watchDetail(movie.movie_id)" :movie="movie"/>
         </div>
     </div>
 </template>
@@ -48,9 +48,9 @@ const router = useRouter()
 const store = useMovieStore()
 
 onMounted(async function() {
-    await store.getNowOns()
+    await store.getMoviePicks()
 })
-const movieList = computed(() => store.nowOns)
+const movieList = computed(() => store.movies)
 const watchDetail = function(id) {
     router.push({name:'detail', params: {id}})
 }
