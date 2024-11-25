@@ -13,7 +13,7 @@
             </thead>
             <tbody>
             <tr v-for="article in props.articleList" :key="article.id">
-                <td class="title"> <RouterLink :to="{ name: 'articleDetail', params: { id: article.id } }">{{article.title}} [{{ article.comment_count }}]</RouterLink></td>
+                <td class="title"> <RouterLink class='link' :to="{ name: 'articleDetail', params: { id: article.id } }">{{article.title}} [{{ article.comment_count }}]</RouterLink></td>
                 <td class="username">{{article.user.username}}</td>
                 <td class="created-at"><time>{{article.created_at}}</time></td>
                 <td class="likes">{{ article.likes_count }}</td>
@@ -57,5 +57,14 @@ margin-bottom: 1rem;
 align-self: flex-end;
 /* background-color: #007bff; */
 color: #FFFF;
+}
+
+.link {
+    text-decoration: none;  
+    color: black;  
+}
+
+.link:hover {
+    color: #333;
 }
 </style>

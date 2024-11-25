@@ -26,9 +26,9 @@
       </div>
   </div>
 
-  <div>
-    <button v-show="article.user.username != currentUsername" @click="likeArticle">좋아요</button>
-    <p>좋아요 {{ like_count }}개</p>
+  <div class="like-section">
+    <button v-show="article.user.username != currentUsername" @click="likeArticle" class="like-btn">좋아요</button>
+    <p class="like-count">좋아요 {{ like_count }}개</p>
   </div>
   <!-- 댓글 -->
   <div class="card mt-3">
@@ -200,7 +200,20 @@ router.push({ name: 'editArticle', params: { id } }); //해당 게시글 ID 라�
       background-color: #FFFF;
       height: auto;
       min-height: 10rem;
-
   }
-
+  .like-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 1rem;
+}
+.like-btn {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 4px; /* 둥근 모서리 */
+  font-size: 1rem;
+  cursor: pointer;
+}
 </style>
