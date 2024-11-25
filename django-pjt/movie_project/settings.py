@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dj_rest_auth',
     'dj_rest_auth.registration',
+    'events',
     'movies',
     'rest_framework',
     'rest_framework.authtoken',

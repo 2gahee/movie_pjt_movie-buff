@@ -11,7 +11,7 @@ export const useMovieStore = defineStore('movie', () => {
   const movies = ref([])
   const API_URL = 'http://127.0.0.1:8000'
   const likedMovies = ref([])
-  const myArticles = ref([])
+  const eventList = ref([])
   // const token = ref(null)
 
   // const isLogin = computed(() => {
@@ -277,6 +277,23 @@ const getMoviePicks = async function () {
     movies.value = res.data
   } catch (error) {
     console.error("영화 정보를 가져오는 중 오류:", error)
+}}
+
+const getEvents = async function () {
+  try {
+    const headers = token.value
+    ? { Authorization: `Token ${token.value}` } // 로그인 상태
+    : {}; // 비로그인 상태
+    
+    const res = await axios({
+      method: 'get',
+      url: `${API_URL}/events/megabox/`,
+      headers: headers,
+      withCredentials: true
+    })
+    eventList.value = res.data
+  } catch (error) {
+    console.error("이벤트 정보를 가져오는 중 오류:", error)
 }}
 
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
