@@ -26,6 +26,10 @@
       </div>
   </div>
 
+  <div>
+    <button v-show="article.user.username != currentUsername" @click="likeArticle">좋아요</button>
+    <p>좋아요 {{ like_count }}개</p>
+  </div>
   <!-- 댓글 -->
   <div class="card mt-3">
       <!-- 댓글등록 -->
@@ -50,9 +54,10 @@ import CommentCreate from '@/components/CommentCreate.vue';
 const route = useRoute()
 const router = useRouter();
 const store = useMovieStore()
-
+const like_count = ref(null)
 const article = ref(null)
 const comments = ref([]); // 댓글 리스트 상태
+
 const id = route.params.id //현재 게시글 id
 const currentUsername = localStorage.username || '';// 현재 로그인된 사용자 이름
 
@@ -79,6 +84,7 @@ axios({
     console.log(res.data)
     article.value = res.data
     comments.value = res.data.comment_set || []; // 댓글 데이터를 받아 저장(존재하지 않으면 빈 배열)
+    like_count.value = res.data.like_users.length
   })
   .catch((err) => {
     console.log(err)
@@ -106,6 +112,23 @@ axios({
     alert('게시글 삭제에 실패했습니다.');
   });
 };
+
+const likeArticle = () => {
+  axios({
+  method: 'put',
+  url: `${store.API_URL}/community/${id}/like/`,
+  headers: {
+    Authorization: `Token ${store.token}` // 인증 토큰 추가
+  }
+})
+  .then((res) => {
+    console.log(res.data)
+    like_count.value = res.data.like_users.length
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+}
 
 // 수정 페이지로 이동(수정 전용 라우트로 이동)
 const goToEditPage = () => {

@@ -59,7 +59,7 @@
     const goodsRecommend = async function() {
         await store.getEvents()
         if (store.eventList.length) {
-            localStorage.setItem("megabox", (store.eventList))
+            localStorage.setItem("megabox", JSON.stringify(store.eventList))
         }
     }
 </script>

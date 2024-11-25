@@ -16,7 +16,7 @@ driver = webdriver.Chrome(
 
 driver.get("https://www.google.com")
 User_Agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
-url = "https://www.megabox.co.kr/event/megabox"
+# url = ["https://www.megabox.co.kr/event/megabox", "https://www.megabox.co.kr/event/movie"]
 driver.get(url)
 
 # 페이지 로드 후 HTML 소스 가져오기
@@ -26,6 +26,7 @@ soup = BeautifulSoup(html, 'html.parser')
 # 이벤트 리스트 가져오기
 a_tags = soup.select("#event-list-wrap > div > div > ul > li > a")
 event_no_list = [tag['data-no'] for tag in a_tags if 'data-no' in tag.attrs]
+print(event_no_list)
 goods_list = []
 goods_url = "https://megabox.co.kr/on/oh/ohe/Event/selectGoodsStockPrco.do"
 for num in event_no_list:
