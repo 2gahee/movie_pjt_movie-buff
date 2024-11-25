@@ -2,7 +2,12 @@
     <div>
         <h2 class="movies-title">{{ store.userInfo.username }}님의 Movies</h2>
         <!-- <h4 class="movies-genre">{{ store.userInfo.username }}님이 선호하는 장르: </h4> -->
-        <div class="MovieCardContainer">
+        <div v-if="likedList.length === 0" class="no-movies">
+            <p>좋아요 누른 영화가 없습니다. 좋아요를 눌러보세요!</p>
+            <button @click="goMovies" type="button" class="btn btn-dark">전체 영화 보러가기</button>&ensp;
+            <button @click="goCurrentMovies" type="button" class="btn btn-dark">상영 중인 영화 보러가기</button>
+        </div>
+        <div v-else class="MovieCardContainer">
         <MovieCard v-for="movie in likedList" :key="movie.id" @click="watchDetail(movie.id)" :movie="movie"/>
         </div>
     </div>
@@ -23,6 +28,13 @@ const watchDetail = function(id) {
     router.push({name:'detail', params: {id}})
 }
 
+const goMovies = function() {
+    router.push({path:'/movies'})
+}
+
+const goCurrentMovies = function() {
+    router.push({path:'/now-on'})
+}
 
 </script>
 
@@ -35,6 +47,17 @@ const watchDetail = function(id) {
   margin-top: 1rem;        
   margin-left: 3rem;    
 } */
+
+.no-movies {
+  /* text-align: center; */
+  margin-top: 3rem;
+  margin-left: 3rem;
+}
+
+.no-movies p {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
 
 .MovieCardContainer{
     display: flex;

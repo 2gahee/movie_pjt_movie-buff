@@ -25,12 +25,6 @@
                     <input type="text" class="form-control" id="inputNickname" v-model.trim="nickname">
                 </div>
 
-				 <!-- <div class="form-group has-success">
-					<label class="form-label mt-4" for="inputValid">비밀번호</label>
-					<input type="password" class="form-control is-valid" id="inputValid">
-					<div class="valid-feedback"></div>
-				</div> -->
-
 
                 <div :class="['form-group', passwordValid ? 'has-success' : '']">
                     <label class="form-label mt-4" for="password1">비밀번호</label>
@@ -43,13 +37,6 @@
                     />
                     <div class="valid-feedback" v-if="passwordValid">비밀번호 입력 완료</div>
                 </div>
-
-
-                <!-- <div class="form-group has-danger">
-					<label class="form-label mt-4" for="inputInvalid">비밀번호 재확인</label> 
-					<input type="password" class="form-control is-invalid" id="inputInvalid">
-					<div class="invalid-feedback">비밀번호가 일치하지 않습니다</div>
-				</div>  -->
 
                 <div :class="['form-group', passwordMatch ? 'has-success' : 'has-danger']">
                     <label class="form-label mt-4" for="password2">비밀번호 재확인</label>

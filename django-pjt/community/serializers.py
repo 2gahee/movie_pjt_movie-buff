@@ -14,7 +14,7 @@ class ArticleListSerializer(serializers.ModelSerializer):
     user = ArticleUserSerializer(read_only=True)
     comment_count = serializers.SerializerMethodField()
     def get_comment_count(self, obj):
-        return Comment.objects.filter(pk=obj.pk).count()
+        return Comment.objects.filter(article=obj).count()
     class Meta:
         model = Article
         fields = '__all__'
