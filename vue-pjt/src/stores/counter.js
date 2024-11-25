@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router'
 export const useMovieStore = defineStore('movie', () => {
   const articles = ref([])
   const nowOns = ref([])
+  const movies = ref([])
   const API_URL = 'http://127.0.0.1:8000'
   const likedMovies = ref([])
   const myArticles = ref([])
@@ -209,12 +210,13 @@ const getNowOns = async function () {
 
 const getMovieDetails = async function(movieId) {
   try {
+    const headers = token.value
+    ? { Authorization: `Token ${token.value}` } // 로그인 상태
+    : {}; // 비로그인 상태
       const res = await axios({
           method: 'get',
           url: `${API_URL}/movies/${movieId}/`,
-          headers: {
-              Authorization: `Token ${token.value}`,
-          },
+          headers: headers,
           withCredentials: true,
       });
       console.log('API 응답');
@@ -260,7 +262,24 @@ const getLikedMovies = async function () {
     console.error("사용자 영화정보 가져오는 중 오류:", error)
 }}
 
+const getMoviePicks = async function () {
+  try {
+    const headers = token.value
+    ? { Authorization: `Token ${token.value}` } // 로그인 상태
+    : {}; // 비로그인 상태
+    
+    const res = await axios({
+      method: 'get',
+      url: `${API_URL}/movies/moviepicks/`,
+      headers: headers,
+      withCredentials: true
+    })
+    movies.value = res.data
+  } catch (error) {
+    console.error("영화 정보를 가져오는 중 오류:", error)
+}}
+
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
     getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
-    getLikedMovies, likedMovies, userInfo, fetchUserInfo, updateUserProfile}
+    getLikedMovies, likedMovies, userInfo, fetchUserInfo, updateUserProfile, getMoviePicks, movies}
 })

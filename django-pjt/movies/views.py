@@ -5,13 +5,14 @@ from rest_framework import status
 # from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.shortcuts import render
-from .models import UserMovie
-from .serializers import MovieSerializer
+from .models import UserMovie, MoviePicks
+from .serializers import MoviePicksSerializer
 import requests
 from rest_framework.exceptions import NotFound
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import AllowAny
+import json
 # Create your views here.
 
 @api_view(["GET"])
@@ -104,3 +105,21 @@ def likeMovieList(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def moviepicks_list(request):
+    if request.method == "GET":
+        title_query = request.GET.get('title', '')
+        username_query = request.GET.get('username', '')
+        content_query = request.GET.get('content', '')
+        if title_query:
+            movies = MoviePicks.objects.filter(title__icontains=title_query)
+        elif username_query:
+            movies = MoviePicks.objects.filter(user__username__icontains=username_query)
+        elif content_query:
+            movies = MoviePicks.objects.filter(content__icontains=content_query)
+        else:  # 검색 조건이 없으면 전체 리스트 반환
+            movies = MoviePicks.objects.all()
+        serializer = MoviePicksSerializer(movies, many=True)
+        return Response(serializer.data)

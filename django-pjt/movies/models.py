@@ -24,3 +24,8 @@ class Cinema(models.Model):
     company = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     coordinates = models.CharField(max_length=200)
+
+class MoviePicks(models.Model):
+    movie_id = models.IntegerField()
+    title = models.CharField(max_length=50)
+    poster_path = models.CharField(max_length=50)

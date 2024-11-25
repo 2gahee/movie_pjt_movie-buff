@@ -12,6 +12,7 @@
           :class="isLiked ? 'btn btn-secondary btn-lg' : 'btn btn-primary btn-lg'">
           {{ isLiked ? '좋아요 취소' : '좋아요' }}
         </button>
+        <button v-else class="btn btn-secondary btn-lg" disabled>로그인 후 좋아요 가능</button>
       </div>
       <div class="whole-container">
         <div class="img-container">
