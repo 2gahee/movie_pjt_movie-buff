@@ -15,7 +15,6 @@
             <button v-if="comment.user.username === currentUserName"
              @click="deleteComment(comment.id, index)" 
             class="btn">삭제 </button>   
-          
         </div>
     </div>  
     
@@ -75,5 +74,7 @@ const deleteComment = async (commentId, index) => {
 </script>
 
 <style scoped>
-
+.list-group {
+  margin-bottom: 2rem;
+}
 </style>

@@ -32,7 +32,40 @@
        <CommentCreate :id="id" @add-comment="addComment"/>
     
       <!-- 댓글목록 -->
-       <CommentList :comments="comments" :id="id" @update:comments="updateComments"/>       
+       <!-- <CommentList :comments="comments" :id="id" @update:comments="updateComments"/>   -->
+       <CommentList :comments="paginatedComments" :id="id" @update:comments="updateComments" />
+       <div class="row">
+        <nav id="pagination" aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <button
+                class="page-link"
+                :disabled="currentPage === 1"
+                @click="changePage(currentPage - 1)"
+              >
+                이전
+              </button>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in totalPages"
+              :key="page"
+              :class="{ active: page === currentPage }"
+            >
+              <button class="page-link" @click="changePage(page)">{{ page }}</button>
+            </li>
+            <li class="page-item">
+              <button
+                class="page-link"
+                :disabled="currentPage === totalPages"
+                @click="changePage(currentPage + 1)"
+              >
+                다음
+              </button>
+            </li>
+          </ul>
+        </nav>
+    </div>     
   </div>
 </div>
 
@@ -41,7 +74,7 @@
 
 <script setup>
 import axios from 'axios'
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useMovieStore } from '@/stores/counter';
 import { useRoute, useRouter } from 'vue-router'
 import CommentList from '@/components/CommentList.vue';
@@ -54,11 +87,28 @@ const store = useMovieStore()
 const article = ref(null)
 const comments = ref([]); // 댓글 리스트 상태
 const id = route.params.id //현재 게시글 id
+const currentPage = ref(1);
+const itemsPerPage = 10;
 const currentUsername = localStorage.username || '';// 현재 로그인된 사용자 이름
+
+// 댓글 페이지네이션 관련 계산 속성
+const totalPages = computed(() => Math.ceil(comments.value.length / itemsPerPage));
+const paginatedComments = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return comments.value.slice(start, end); // 현재 페이지에 해당하는 댓글만 반환
+});
+
+// 페이지 변경 함수
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+};
 
 // 새 댓글을 추가하는 함수
 const addComment = (newComment) => {
-  comments.value.push(newComment); // 새 댓글을 리스트에 추가
+  comments.value.push(newComment); 
 };
 
 
@@ -84,6 +134,7 @@ axios({
     console.log(err)
   })
 })
+
 
 // 게시글 삭제
 const deleteArticle = () => {
