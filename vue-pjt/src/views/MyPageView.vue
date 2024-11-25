@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <AccountActivityView />
         <AccountInfoView />
     </div>
@@ -9,9 +9,11 @@
 import AccountActivityView from './AccountActivityView.vue'
 import AccountInfoView from './AccountInfoView.vue';
 
-
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+/* .container {
+    display: flex;
 
+} */
 </style>

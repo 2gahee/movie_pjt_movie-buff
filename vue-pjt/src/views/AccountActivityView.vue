@@ -20,7 +20,5 @@ import AccountMovieLikes from '@/components/AccountMovieLikes.vue'
 .description{
     margin-top: 2rem; 
     font-weight: bold;
-    display: flex;
-    justify-content: center;
 }
 </style>

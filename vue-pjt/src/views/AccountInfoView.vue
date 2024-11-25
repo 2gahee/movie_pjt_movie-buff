@@ -63,8 +63,11 @@ onMounted(() => {
 
 .mypage-container {
     max-width: 800px;
-    margin: 2rem auto;
+    /* margin: 2rem auto; */
     padding: 0 1rem;
+    /* margin-left: 3rem; */
+    margin: auto;
+    margin-bottom: 5rem;
 }
 
 .profile-card {
@@ -136,29 +139,6 @@ onMounted(() => {
     padding: 2rem;
     text-align: center;
     color: #6c757d;
-}
-
-@media (max-width: 640px) {
-    .mypage-container {
-        margin: 1rem;
-    }
-
-    .profile-header {
-        padding: 1rem 1.5rem;
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-
-    .info-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-
-    .label {
-        flex: none;
-    }
 }
 
 </style>

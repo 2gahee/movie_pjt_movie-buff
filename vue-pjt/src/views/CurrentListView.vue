@@ -37,5 +37,6 @@ const watchDetail = function(id) {
 .MovieCardContainer{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 </style>
