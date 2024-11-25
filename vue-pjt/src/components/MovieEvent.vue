@@ -1,17 +1,15 @@
 <template>
-    <div>
-        <div v-if="movieEvent.length">
+    <div class="event-box">
+        <div v-if="movieEvent.length" class="event-title">
             관련 이벤트
-            <div v-for="event in movieEvent">
-                <p>{{ event.goods_name }} <a href="https://www.megabox.co.kr/booking">(메가박스)</a></p>
-                <div v-for="info in event.goods_info">
+            <div v-for="event in movieEvent" :key="event.goods_name">
+                <p class="event-info">{{ event.goods_name }} <a href="https://www.megabox.co.kr/booking">(메가박스)</a></p>
+                <div v-for="info in event.goods_info" :key="info.branch" class="event-details">
                     {{ info.region.split(" ")[0]}} - {{info.branch}} : {{ info.stock_status }}
                 </div>
-                
-                
             </div>
         </div>
-        <div v-else>
+        <div v-else class="event-title2">
             확인된 이벤트 정보가 없습니다
         </div>
     </div>
@@ -47,5 +45,31 @@ const movieEvent = computed(() => {
 </script>
 
 <style scoped>
+.event-box {
+ margin-top: 2rem;
+}
+.event-title {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+.event-info {
+  font-size: 1.2rem; 
+  color: black; 
+  margin: 0.5rem 0; 
+}
 
+.event-details {
+  font-size: 0.9rem; 
+  color: black; 
+  margin-left: 1rem; 
+}
+
+.event-title2 {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
 </style>
