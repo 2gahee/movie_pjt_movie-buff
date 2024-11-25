@@ -31,6 +31,7 @@ const normalizeString = (str) => {
 }
 
 const eventList = JSON.parse(localStorage.getItem('megabox')) || []
+console.log(eventList)
 const movieEvent = computed(() => { 
     if (!props.title) {
         return []

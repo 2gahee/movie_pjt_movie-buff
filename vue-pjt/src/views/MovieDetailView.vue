@@ -22,7 +22,7 @@
           <p>"{{ movie.tagline }}"</p>
           <p>{{ movie.overview }}</p>
         </div>
-        <MovieEvent :title="title"/>
+        <MovieEvent v-if="title!=null" :title="title"/>
       </div>
     </div>
     <div v-else>
