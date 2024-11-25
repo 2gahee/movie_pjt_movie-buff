@@ -22,6 +22,7 @@
           <p>"{{ movie.tagline }}"</p>
           <p>{{ movie.overview }}</p>
         </div>
+        <MovieEvent :title="title"/>
       </div>
     </div>
     <div v-else>
@@ -34,6 +35,7 @@
 import { useRoute } from 'vue-router'
 import { useMovieStore } from '@/stores/counter'
 import { onMounted, ref, computed, watch } from 'vue'
+import MovieEvent from '@/components/MovieEvent.vue';
 
 const store = useMovieStore()
 const route = useRoute()
@@ -41,7 +43,7 @@ const movie = ref(null)
 const genreString = ref('')
 const isLiked= ref(null)
 const movieId = Number(route.params.id)
-
+const title = ref(null)
 onMounted(async () => {
   console.log("movieId:", movieId)
   if (!movieId || isNaN(movieId)) {
@@ -54,7 +56,7 @@ onMounted(async () => {
     await store.getLikedMovies();
     console.log(movie.value);
     genreString.value = movie.value.genres.map(genre => genre.name).join(" / ");
-
+    title.value = movie.value.title
     const likedMovie = store.likedMovies.find((movie) => movie.id === movieId);
     isLiked.value = !!likedMovie;
     // 배경 이미지 설정

@@ -1,7 +1,8 @@
     <template>
         <div class="home-description">
-            <h1>굿즈 기반 영화 추천</h1>
-            <p>재고 물량이 임박한 영화부터 추천됩니다.</p>
+            <h1>무비덕후 영화 추천</h1>
+            <p>갱신 버튼을 누르면 굿즈 재고를 기반으로 영화를 추천드려요!</p>
+            <button class="btn btn-primary btn-lg" @click.prevent="goodsRecommend">갱신</button>
             <div v-if="bestRecommend" id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselAutoplaying" data-bs-slide-to="0" class="active" aria-current="true"></button>
@@ -54,6 +55,12 @@
     }
     const imgString = function(movie) {
         return `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+    }
+    const goodsRecommend = async function() {
+        await store.getEvents()
+        if (store.eventList.length) {
+            localStorage.setItem("megabox", (store.eventList))
+        }
     }
 </script>
 
