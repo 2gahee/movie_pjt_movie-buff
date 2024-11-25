@@ -1,6 +1,8 @@
 <template>
     <div>
+        <div class="description">
         <h1>Now On</h1>
+        </div>
         <div class="MovieCardContainer">
         <MovieCard v-for="movie in nowOnList" :key="movie.id" @click="watchDetail(movie.id)" :movie="movie"/>
         </div>
@@ -25,6 +27,13 @@ const watchDetail = function(id) {
 </script>
 
 <style scoped>
+.description{
+    margin-top: 2rem; 
+    margin-bottom: 2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+}
 .MovieCardContainer{
     display: flex;
     flex-wrap: wrap;

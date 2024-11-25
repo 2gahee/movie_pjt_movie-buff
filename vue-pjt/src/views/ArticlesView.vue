@@ -36,38 +36,73 @@
             </div>
         </div>
     </div>
-
-    <ArticleList :articleList="articleList"/>
+    
+    <ArticleList :articleList="paginatedArticles" />
 
     <div class="row">
-        <nav id="pagination" aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><a class="page-link" href="#">이전</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">다음</a></li>
-            </ul>
-        </nav>
+      <nav id="pagination" aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <button
+              class="page-link"
+              :disabled="currentPage === 1"
+              @click="changePage(currentPage - 1)"
+            >
+              이전
+            </button>
+          </li>
+          <li
+            class="page-item"
+            v-for="page in totalPages"
+            :key="page"
+            :class="{ active: page === currentPage }"
+          >
+            <button class="page-link" @click="changePage(page)">{{ page }}</button>
+          </li>
+          <li class="page-item">
+            <button
+              class="page-link"
+              :disabled="currentPage === totalPages"
+              @click="changePage(currentPage + 1)"
+            >
+              다음
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
-</div>
-        
+
+</div>       
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, computed, onMounted, watchEffect } from 'vue';
 import { useMovieStore } from '@/stores/counter';
-import { useRouter } from 'vue-router'
 import ArticleList from '@/components/ArticleList.vue';
 const store = useMovieStore()
-const router = useRouter();
 const articleList = ref([])
+const currentPage = ref(1);
+const itemsPerPage = 9;
 const query = ref('')
 onMounted(() => {
     store.getArticles()
 })
+// pagination
+const totalPages = computed(() => Math.ceil(articleList.value.length / itemsPerPage));
+const paginatedArticles = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return articleList.value.slice(start, end);
+});
+
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+}
+
+
+
 const searchArticles = function() {
     const field = document.querySelector('#search-type').value
     store.getArticles(field, query.value)

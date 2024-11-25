@@ -1,6 +1,8 @@
 <template>
     <div>
+        <div class="description">
         <h1>Movies</h1>
+        </div>
         <div class="row" id="search-box">
         <div class="card card-margin search-form">
             <div class="card-body p-0">
