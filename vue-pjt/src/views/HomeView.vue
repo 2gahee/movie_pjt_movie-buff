@@ -60,7 +60,7 @@
         await store.getEvents()
         if (store.eventList && store.eventList.length) {
             console.log(store.eventList)
-            localStorage.setItem("megabox", JSON.stringify(store.eventList))
+            localStorage.setItem("megabox", JSON.stringifyJSON.stringify(store.eventList))
         }
     }
 </script>

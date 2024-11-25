@@ -72,3 +72,17 @@ def comment_detail(request, article_pk, comment_pk):
     #     if serializer.is_valid(raise_exception=True):
     #         serializer.save()
     #         return Response(serializer.data)
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def toggle_like(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    if request.user in article.like_users.all():
+        article.like_users.remove(request.user)
+    else:
+        article.like_users.add(request.user)
+    serializer = ArticleSerializer(article, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

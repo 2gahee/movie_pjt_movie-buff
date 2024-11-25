@@ -16,7 +16,7 @@
                 <td class="title"> <RouterLink :to="{ name: 'articleDetail', params: { id: article.id } }">{{article.title}} [{{ article.comment_count }}]</RouterLink></td>
                 <td class="username">{{article.user.username}}</td>
                 <td class="created-at"><time>{{article.created_at}}</time></td>
-                <td class="likes"></td>
+                <td class="likes">{{ article.likes_count }}</td>
             </tr>
             </tbody>
     </table>
