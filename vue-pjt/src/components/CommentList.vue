@@ -11,7 +11,6 @@
             <div class="d-flex">
                 <div class="px-1 me-1 bg-primary text-white rounded">{{ comment.user.username }}</div>&nbsp;
                 <div>{{ comment.content }}</div>
-                <div>{{ comment.created_at }}</div>
             </div>
             <div class="ms-auto">{{ comment.created_at }}</div>
             <button v-if="comment.user.username === currentUserName"

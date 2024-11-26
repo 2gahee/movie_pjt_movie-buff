@@ -54,5 +54,7 @@ const submitComment = () => {
 </script>
 
 <style scoped>
-
+.form-control {
+  height: 15rem;
+}
 </style>

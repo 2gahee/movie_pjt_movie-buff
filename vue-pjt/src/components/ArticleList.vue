@@ -16,7 +16,7 @@
                 <td class="title"> <RouterLink class='link' :to="{ name: 'articleDetail', params: { id: article.id } }">{{article.title}} [{{ article.comment_count }}]</RouterLink></td>
                 <td class="username">{{article.user.username}}</td>
                 <td class="created-at"><time>{{article.created_at}}</time></td>
-                <td class="likes">{{ article.likes_count }}</td>
+                <td class="likes">{{ article.like_users.length }}</td>
             </tr>
             </tbody>
     </table>
@@ -32,6 +32,8 @@ const router = useRouter()
 const props = defineProps({
     articleList : Array
 })
+
+console.log("Article List:", props.articleList); 
 const goCreate = function() {
     router.push({path:'/community/create/'})
 }
@@ -67,4 +69,5 @@ color: #FFFF;
 .link:hover {
     color: #333;
 }
+
 </style>

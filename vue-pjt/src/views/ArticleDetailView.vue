@@ -219,7 +219,7 @@ router.push({ name: 'editArticle', params: { id } }); //해당 게시글 ID 라�
   background-color: #0d6efd;
   color: white;
   border: none;
-  border-radius: 4px; /* 둥근 모서리 */
+  border-radius: 4px; 
   font-size: 1rem;
   cursor: pointer;
 }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="description">
-        <h1>Movies</h1>
+        <img src="/images/allmovielogo.png" alt="로고" class="allmovielogo" />
         </div>
         <div class="row" id="search-box">
         <div class="card card-margin search-form">
@@ -78,8 +78,7 @@ const watchDetail = function(movie) {
 }
 .search-form {
   width: 550px;
-  margin: 0 auto;
-  margin-top: 1rem;  
+  margin: 0 auto; 
 }
 
 .search-form input {
@@ -115,5 +114,9 @@ const watchDetail = function(movie) {
 
 #search-type {
   margin-right:4px;
+}
+.allmovielogo {
+  width: 10rem;
+  height: auto; 
 }
 </style>
