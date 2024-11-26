@@ -374,6 +374,9 @@ const searchMovies = function (keyword = '') {
   })
   .catch(err => console.log(err))
 }
+// const setNowOns = function(movies) {
+//   this.nowOns = movies; 
+// }
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
     getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
     getLikedMovies, likedMovies,userInfo, fetchUserInfo, updateUserProfile, getMoviePicks, movies, getEvents, eventList, searchMovies}})

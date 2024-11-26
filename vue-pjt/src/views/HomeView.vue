@@ -37,12 +37,12 @@
     </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useMovieStore } from '@/stores/counter';
 import { useRouter } from 'vue-router'
 const router = useRouter();
 const store = useMovieStore()
-
+const eventMovies = ref([])
 
 onMounted(async function() {
     await store.getNowOns()
@@ -59,10 +59,31 @@ const imgString = function(movie) {
 const goodsRecommend = async function() {
     await store.getEvents()
     if (store.eventList && store.eventList.length) {
-        console.log(store.eventList)
+        // console.log(store.eventList)
         localStorage.setItem("megabox", JSON.stringify(store.eventList))
+        const eventList = store.eventList
+        eventMovies.value = await Promise.all(eventList.map(async (event) => {
+            console.log(event.cinemas[0])
+            const title = Object.keys(event.cinemas[0]) // keys 추출
+                .filter(key => !isNaN(key))            // 숫자인 키만 필터링
+                .sort((a, b) => a - b)                // 키를 순서대로 정렬
+                .map(key => event.cinemas[0][key])    // 값을 추출
+                .join("")
+            // console.log(title)
+            await store.searchMovies(title)
+            const movie = store.movies.value.find((movie) => {
+                // 영화 제목을 비교
+                return movie.some(cinema => {
+                    return Object.values(cinema).join("").localeCompare(title) === 0
+                })
+            })
+            console.log(movie)
+            return movie || null
+        }))
     }
 }
+
+
 </script>
 
 <style scoped>
@@ -80,17 +101,6 @@ const goodsRecommend = async function() {
     color: white;
     text-align: left;
 }
-/* .carousel {
-  width: 80%; 
-  height: 40rem;
-  margin: 0 auto; 
-  margin-bottom: 5rem;
-}
-.carousel-item img {
-  width: 100%; 
-  height:40rem; 
-  object-fit: cover; 
-} */
 
 .btn {
     background-color: #D72323;
