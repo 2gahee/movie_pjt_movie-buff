@@ -12,32 +12,6 @@ export const useMovieStore = defineStore('movie', () => {
   const API_URL = 'http://127.0.0.1:8000'
   const likedMovies = ref([])
   const eventList = ref([])
-  // const token = ref(null)
-
-  // const isLogin = computed(() => {
-  //   if (token.value === null) {
-  //     return false
-  //   } else {
-  //     return true
-  //   }
-  // })
-  // function getCookie(name) {
-  //   let cookieValue = null;
-  //   if (document.cookie && document.cookie !== '') {
-  //     const cookies = document.cookie.split(';');
-  //     for (let i = 0; i < cookies.length; i++) {
-  //       const cookie = cookies[i].trim();
-  //       // Does this cookie string begin with the name we want?
-  //       if (cookie.substring(0, name.length + 1) === (name + '=')) {
-  //         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-  //         break;
-  //       }
-  //     }
-  //   }
-  //   console.log('CSRF Token:', cookieValue); // Add this to debug
-  //   return cookieValue;
-  // }
-  // 페이지 새로고침 시 토큰 복원
   const savedToken = localStorage.getItem('token') || null
   const token = ref(savedToken)
   const userInfo = ref({
@@ -218,9 +192,10 @@ const getNowOns = async function () {
       headers: headers,
       withCredentials: true
     })
-    nowOns.value = res.data
+    nowOns.value = Array.isArray(res.data) ? res.data : []
   } catch (error) {
     console.error("현재 상영작 정보를 가져오는 중 오류:", error)
+    throw error
 }}
 
 const getMovieDetails = async function(movieId) {
@@ -353,30 +328,31 @@ const getEvents = async function () {
   }
 };
 
-const searchMovies = function (keyword = '') {
-  const url = `${API_URL}/movies/search/`
-  axios({
-    method: 'get',
-    url: url,
-    headers: {
-      Authorization: `Token ${token.value}`
-    },
-    params: {
-      query: keyword,
-      include_adult: true,
-      language: 'ko-KOR'
-    },
-    withCredentials: true
-  })
-  .then(res => {
-    movies.value = res.data
-    console.log(res.data)
-  })
-  .catch(err => console.log(err))
+const searchMovies = async function (keyword = '') {
+  try {
+      const response = await axios({
+          method: 'get',
+          url: `${API_URL}/movies/search/`,
+          headers: {
+              Authorization: `Token ${token.value}`
+          },
+          params: {
+              query: keyword,
+              include_adult: true,
+              language: 'ko-KOR'
+          },
+          withCredentials: true
+      })
+      
+      movies.value = response.data
+      console.log(movies.value)
+      return response.data
+  } catch (err) {
+      console.error("영화 검색 오류:", err)
+      throw err
+  }
 }
-// const setNowOns = function(movies) {
-//   this.nowOns = movies; 
-// }
+
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
     getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
     getLikedMovies, likedMovies,userInfo, fetchUserInfo, updateUserProfile, getMoviePicks, movies, getEvents, eventList, searchMovies}})

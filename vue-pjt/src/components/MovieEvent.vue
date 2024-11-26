@@ -3,9 +3,11 @@
         <div v-if="movieEvent.length" class="event-title">
             관련 이벤트
             <div v-for="event in movieEvent" :key="event.goods_name">
-                <p class="event-info">{{ event.goods_name }} <a href="https://www.megabox.co.kr/booking">(메가박스)</a></p>
-                <div v-for="info in event.goods_info" :key="info.branch" class="event-details">
-                    {{ info.region.split(" ")[0]}} - {{info.branch}} : {{ info.stock_status }}
+                <p class="event-info">{{ event.name }} <a href="https://www.megabox.co.kr/booking">(메가박스)</a></p>
+                {{ event[1] }}
+                <div v-for="(info, name, index) in event.cinemas[1]" :key="name" class="event-details">
+                    <!-- {{ info.region.split(" ")[0]}} - {{info.branch}} : {{ info.stock_status }} -->
+                      <p v-if="name !== 'cinema'">{{ name }}점 - 재고 {{ info.stock }}, 약 {{ Math.round(info.time / 60) }}분 소요</p>
                 </div>
             </div>
         </div>
@@ -34,13 +36,8 @@ const movieEvent = computed(() => {
     if (!props.title) {
         return []
     }
-    
     return eventList.filter((event) => 
-    // console.log(event.goods_name),
-    // console.log(normalizeString(event.goods_name)),
-    // console.log(normalizeString(props.title)),
-
-    normalizeString(event.goods_name).includes(normalizeString(props.title))
+    event.name.includes(props.title)
     )})
 </script>
 
