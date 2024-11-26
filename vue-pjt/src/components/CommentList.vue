@@ -9,14 +9,14 @@
         v-for="(comment, index) in comments" 
         :key="index">
             <div class="d-flex">
-                <div class="px-1 me-1 bg-primary text-white rounded">{{ comment.user.username }}</div>
+                <div class="px-1 me-1 bg-primary text-white rounded">{{ comment.user.username }}</div>&nbsp;
                 <div>{{ comment.content }}</div>
                 <div>{{ comment.created_at }}</div>
             </div>
+            <div class="ms-auto">{{ comment.created_at }}</div>
             <button v-if="comment.user.username === currentUserName"
              @click="deleteComment(comment.id, index)" 
             class="btn">삭제 </button>   
-          
         </div>
     </div>  
     
@@ -76,5 +76,7 @@ const deleteComment = async (commentId, index) => {
 </script>
 
 <style scoped>
-
+.list-group {
+  margin-bottom: 2rem;
+}
 </style>

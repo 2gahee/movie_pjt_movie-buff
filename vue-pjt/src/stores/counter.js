@@ -298,4 +298,4 @@ const getEvents = async function () {
 
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
     getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
-    getLikedMovies, likedMovies, getMoviePicks, movies, getEvents, eventList, userInfo, fetchUserInfo, updateUserProfile}})
+    getLikedMovies, likedMovies,userInfo, fetchUserInfo, updateUserProfile, getMoviePicks, movies, getEvents, eventList}})
