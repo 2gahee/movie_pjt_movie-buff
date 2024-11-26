@@ -28,9 +28,10 @@
       </div>
   </div>
 
-  <div class="like-section">
-    <button v-show="article.user.username != currentUsername" @click="likeArticle" class="like-btn">좋아요</button>
-    <p class="like-count">좋아요 {{ like_count }}개</p>
+  <div>
+    <button v-if="article.user.username != currentUsername && is_liked" @click="likeArticle">좋아요 취소</button>
+    <button v-if="article.user.username != currentUsername && !is_liked" @click="likeArticle">좋아요</button>
+    <p>좋아요 {{ like_count }}개</p>
   </div>
   <!-- 댓글 -->
   <div class="card mt-3">
@@ -115,7 +116,7 @@ const changePage = (page) => {
     currentPage.value = page;
   }
 };
-// const isLiked = computed(() => (like_users.value.includes(currentUsername)))
+
 // 새 댓글을 추가하는 함수
 const addComment = (newComment) => {
   comments.value.push(newComment); 

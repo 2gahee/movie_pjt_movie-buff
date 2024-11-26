@@ -13,8 +13,6 @@
                                 <label for="search-type" hidden>검색 유형</label>
                                     <select class="form-control" id="search-type" name="searchType">
                                         <option value="title">제목</option>
-                                        <option value="content">내용</option>
-                                        <option value="username">작성자</option>
                                     </select>
                                 <label for="search-value" hidden>검색어</label>
                                     <input v-model="query" type="text" placeholder="검색어를 입력해주세요" class="form-control" id="search-value"
@@ -36,25 +34,31 @@
         </div>
     </div>
         <div class="MovieCardContainer">
-        <MovieCard v-for="movie in movieList" :key="movie.movie_id" @click="watchDetail(movie.movie_id)" :movie="movie"/>
+        <MovieCard v-for="movie in movieList" :key="movie.id" @click="watchDetail(movie)" :movie="movie"/>
         </div>
     </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useMovieStore } from '@/stores/counter'
 import MovieCard from '@/components/MovieCard.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const store = useMovieStore()
-
+const query = ref('')
 onMounted(async function() {
     await store.getMoviePicks()
 })
+const searchMovies = async function() {
+    if (query.value.trim()) {
+        await store.searchMovies(query.value) 
+    }
+}
 const movieList = computed(() => store.movies)
-const watchDetail = function(id) {
-    router.push({name:'detail', params: {id}})
+const watchDetail = function(movie) {
+    const movieId = movie.movie_id || movie.id
+    router.push({name:'detail', params: {id : movieId}})
 }
 </script>
 

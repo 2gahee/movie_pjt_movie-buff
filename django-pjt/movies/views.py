@@ -10,7 +10,7 @@ from .serializers import MoviePicksSerializer
 import requests
 from rest_framework.exceptions import NotFound
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from rest_framework.permissions import AllowAny
 import json
 # Create your views here.
@@ -48,6 +48,33 @@ def nowon(request):
     movies = data.get("results", [])  # 'results' 키에서 영화 데이터 추출
     print(movies)
     return Response(movies)
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def movieSearch(request):
+    url = 'https://api.themoviedb.org/3/search/movie'
+    query = request.GET.get('query', '')
+    if not query:
+        return JsonResponse({"error": "검색어를 입력하세요."}, status=400)
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {settings.TMDB_API_KEY}"
+    }
+    response = requests.get(url, headers=headers, params={"query": query, "include_adult": "true", "language": "ko-KR"})
+    if response.status_code != 200:
+        raise NotFound(detail="TMDB API 호출에 실패했습니다.")
+    data = response.json()
+    movies = data.get("results", [])  # 'results' 키에서 영화 데이터 추출
+    return Response(movies)
+    # return Response(movies)
+    # title_query = request.GET.get('title', '')
+    # if title_query:
+    #     articles = Article.objects.filter(title__icontains=title_query)
+    # else:  # 검색 조건이 없으면 전체 리스트 반환
+    #     articles = Article.objects.all()
+    # serializer = ArticleListSerializer(articles, many=True)
+    # return Response(serializer.data)
+
 
 @api_view(["GET"])
 @permission_classes([AllowAny])

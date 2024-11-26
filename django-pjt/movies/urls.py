@@ -6,5 +6,6 @@ urlpatterns = [
     path('<int:movieId>/', views.movieDetail),
     path('<int:movieId>/like/', views.movieLike),
     path('liked_movies/', views.likeMovieList),
-    path('moviepicks/', views.moviepicks_list)
+    path('moviepicks/', views.moviepicks_list),
+    path('search/', views.movieSearch)
 ]

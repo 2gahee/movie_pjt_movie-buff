@@ -21,7 +21,22 @@ export const useMovieStore = defineStore('movie', () => {
   //     return true
   //   }
   // })
-
+  // function getCookie(name) {
+  //   let cookieValue = null;
+  //   if (document.cookie && document.cookie !== '') {
+  //     const cookies = document.cookie.split(';');
+  //     for (let i = 0; i < cookies.length; i++) {
+  //       const cookie = cookies[i].trim();
+  //       // Does this cookie string begin with the name we want?
+  //       if (cookie.substring(0, name.length + 1) === (name + '=')) {
+  //         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   console.log('CSRF Token:', cookieValue); // Add this to debug
+  //   return cookieValue;
+  // }
   // 페이지 새로고침 시 토큰 복원
   const savedToken = localStorage.getItem('token') || null
   const token = ref(savedToken)
@@ -279,23 +294,86 @@ const getMoviePicks = async function () {
     console.error("영화 정보를 가져오는 중 오류:", error)
 }}
 
+const processEventData = (data) => {
+  // Assuming data is the JSON response
+  if (data && data.length > 0) {
+    const sortedEvents = data[0];  // First (and only) item in the list
+    
+    // Convert to an array of events for easier manipulation
+    const eventArray = Object.entries(sortedEvents).map(([name, cinemas]) => ({
+      name,
+      cinemas: Object.entries(cinemas).map(([cinema, details]) => ({
+        cinema,
+        ...details
+      })).sort((a, b) => a.score - b.score)  // Ensure frontend-side sorting
+    })).sort((a, b) => 
+      Math.min(...Object.values(a.cinemas).map(c => c.score)) - 
+      Math.min(...Object.values(b.cinemas).map(c => c.score))
+    );
+
+    return eventArray;
+  }
+  return [];
+}
+
 const getEvents = async function () {
   try {
-    const headers = token.value
-    ? { Authorization: `Token ${token.value}` } // 로그인 상태
-    : {}; // 비로그인 상태
-    
-    const res = await axios({
-      method: 'get',
-      url: `${API_URL}/events/megabox/`,
-      headers: headers,
-      withCredentials: true
-    })
-    eventList.value = res.data
-  } catch (error) {
-    console.error("이벤트 정보를 가져오는 중 오류:", error)
-}}
+    // Default location (can be your initial location)
+    let latitude = 37.5095296;
+    let longitude = 127.0317056;
 
+    // Wrap geolocation in a Promise to handle it properly
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+
+      // Update coordinates if geolocation is successful
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
+    } catch (geoError) {
+      console.warn("Geolocation access denied or failed. Using default location.", geoError);
+      // Will use the default coordinates
+    }
+
+    const res = await axios({
+      method: 'post',
+      url: `${API_URL}/events/getGoods/`,
+      headers: {
+        'Content-Type': 'application/json',
+        // 'X-CSRFToken': getCookie('csrftoken') // CSRF 토큰 설정
+      },
+      withCredentials: true,
+      data: { latitude, longitude }
+    });
+    const processedEvents = processEventData(res.data)
+    eventList.value = processedEvents;
+  } catch (error) {
+    console.error("이벤트 정보를 가져오는 중 오류:", error);
+  }
+};
+
+const searchMovies = function (keyword = '') {
+  const url = `${API_URL}/movies/search/`
+  axios({
+    method: 'get',
+    url: url,
+    headers: {
+      Authorization: `Token ${token.value}`
+    },
+    params: {
+      query: keyword,
+      include_adult: true,
+      language: 'ko-KOR'
+    },
+    withCredentials: true
+  })
+  .then(res => {
+    movies.value = res.data
+    console.log(res.data)
+  })
+  .catch(err => console.log(err))
+}
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
     getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
-    getLikedMovies, likedMovies,userInfo, fetchUserInfo, updateUserProfile, getMoviePicks, movies, getEvents, eventList}})
+    getLikedMovies, likedMovies,userInfo, fetchUserInfo, updateUserProfile, getMoviePicks, movies, getEvents, eventList, searchMovies}})
