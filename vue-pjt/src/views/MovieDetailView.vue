@@ -159,7 +159,7 @@ const likeToggle = async function(movieId) {
 }
 
 .btn-like {
-  background-color: #007bff;
+  background-color: #D72323;
   color: white;
   border: none;
 }

@@ -9,7 +9,7 @@
         v-for="(comment, index) in comments" 
         :key="index">
             <div class="d-flex">
-                <div class="px-1 me-1 bg-primary text-white rounded">{{ comment.user.username }}</div>&nbsp;
+                <div class="px-1 me-1 bg-dark text-white rounded">{{ comment.user.username }}</div>&nbsp;
                 <div>{{ comment.content }}</div>
             </div>
             <div class="ms-auto">{{ comment.created_at }}</div>

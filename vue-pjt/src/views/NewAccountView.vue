@@ -4,9 +4,9 @@
         <section class="bg">
         <div class="container py-4">
             <div class="row align-items-center justify-content-between">
-                <a class="navbar-brand h1 text-center" href="index.do">
-                    <span class="text-dark h4">Accounts</span>                 
-                </a>
+                <div class="home-description">
+                    <img src="/images/movieduku.png" alt="로고" class="moviedukulogo" />
+                </div>
             </div>
             <form @submit.prevent="signUp">
                 <div class="form-group">
@@ -53,7 +53,7 @@
 
 
 				<div class="d-grid gap-2">
-                    <button class="btn btn-primary btn-lg" type="submit" :disabled="!formValid">가입하기</button>
+                    <button class="btn btn-dark btn-lg" type="submit" :disabled="!formValid">가입하기</button>
                 </div>
             </form>
         </div>
@@ -123,4 +123,17 @@ const formValid = computed(() => passwordValid.value && passwordMatch.value && a
 	.d-grid.gap-2{
 		padding-top: 30px;
 	}
+
+    .home-description{
+    margin-top: 2rem; 
+    font-weight: bold;
+    display: flex;     
+    flex-direction: column;
+    align-items: center;
+}
+
+.moviedukulogo {
+  width: 10rem;
+  height: auto; 
+}
 </style>

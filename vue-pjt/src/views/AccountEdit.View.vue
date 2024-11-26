@@ -199,8 +199,8 @@ const handleSubmit = async () => {
 
 .back-button {
     padding: 0.6rem 1.2rem;
-    background-color: #f8f9fa;
-    color: #2c3e50;
+    background-color: #000;
+    color: white;
     border-radius: 8px;
     text-decoration: none;
     font-weight: 500;
@@ -208,7 +208,7 @@ const handleSubmit = async () => {
 }
 
 .back-button:hover {
-    background-color: #e9ecef;
+    background-color: #555;
 }
 
 .edit-form {
@@ -263,7 +263,7 @@ const handleSubmit = async () => {
 
 .submit-button {
     padding: 0.75rem 2rem;
-    background-color: #3498db;
+    background-color: #000;
     color: white;
     border: none;
     border-radius: 8px;
@@ -274,7 +274,7 @@ const handleSubmit = async () => {
 }
 
 .submit-button:hover:not(:disabled) {
-    background-color: #2980b9;
+    background-color: #555;
 }
 
 .submit-button:disabled {

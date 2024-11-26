@@ -115,6 +115,12 @@ watchEffect(() => {
 </script>
 
 <style scoped>
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* 가로 스크롤 제거 */
+}
+
 .description{
     margin-top: 2rem; 
     font-weight: bold;
@@ -122,8 +128,9 @@ watchEffect(() => {
     justify-content: center;
 }
 
-.all {
-    min-width: 500px;
+.articlelogo {
+  width: 10rem;
+  height: auto; 
 }
 
 .search-container{
@@ -131,7 +138,7 @@ watchEffect(() => {
 }
 
 #search-box{
-  min-width: 500px;
+  width: 400px;
   display : inline;
 }
 .search-form {
@@ -186,9 +193,34 @@ watchEffect(() => {
   margin-top: 1rem;
 }
 
-.articlelogo {
-  width: 10rem;
-  height: auto; 
+.pagination {
+  background-color: transparent; 
+}
+
+.page-link {
+  color: #6c757d; 
+  background-color: #f8f9fa; 
+  border: 1px solid #dee2e6; 
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; 
+}
+
+.page-link:hover {
+  color: #ffffff; 
+  background-color: #343a40; 
+  border-color: #343a40;
+}
+
+.page-item.active .page-link {
+  color: #ffffff; 
+  background-color: #212529; 
+  border-color: #212529; 
+  font-weight: bold; 
+}
+
+.page-item.disabled .page-link {
+  color: #adb5bd; 
+  background-color: #e9ecef; 
+  border-color: #dee2e6; 
 }
 
 </style>
