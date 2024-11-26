@@ -1,11 +1,17 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+
+import { useMovieStore } from '../stores/counter' 
+import { computed } from 'vue'
+
+const movieStore = useMovieStore()
+const isLogin = computed(() => movieStore.isLogin) // 로그인 상태
 </script>
 
 <template>
   <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" >
     <div class="container-fluid">
-      <RouterLink to="/" class="navbar-brand">로고</RouterLink>
+      <RouterLink to="/" class="navbar-brand"><img src="/images/logo4.png" alt="로고" class="navbar-logo" /></RouterLink>
       <button
         class="navbar-toggler" 
         type="button" 
@@ -33,17 +39,27 @@ import { RouterLink } from 'vue-router'
          </li>
         </ul>
 
+
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item2">
-            <RouterLink to="/mypage" class="nav-link">MyPage</RouterLink>
-          </li>
-          <li class="nav-item2">
-            <RouterLink to="/login" class="nav-link">LogIn</RouterLink>
-          </li>
-          <li class="nav-item2">
-            <RouterLink to="/signup" class="nav-link">SignUp</RouterLink>
-          </li>
+          <!-- 로그인 여부에 따라 조건부 렌더링 -->
+          <template v-if="isLogin">
+            <li class="nav-item2">
+              <RouterLink to="/mypage" class="nav-link">MyPage</RouterLink>
+            </li>
+            <li class="nav-item2">
+              <button class="btn btn-link nav-link" @click="movieStore.logOut">LogOut</button>
+            </li>
+          </template>
+          <template v-else>
+            <li class="nav-item2">
+              <RouterLink to="/login" class="nav-link">LogIn</RouterLink>
+            </li>
+            <li class="nav-item2">
+              <RouterLink to="/signup" class="nav-link">SignUp</RouterLink>
+            </li>
+          </template>
         </ul>
+
       </div>
     </div>
   </nav>
@@ -51,5 +67,8 @@ import { RouterLink } from 'vue-router'
 
 
 <style  scoped>
-
+.router-link-active {
+    color:  #ff0000; /* 현재 페이지는 항상 빨간색 */
+    font-weight: bold; /* 강조 효과 */
+}
 </style>

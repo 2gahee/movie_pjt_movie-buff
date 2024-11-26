@@ -6,8 +6,8 @@ url = "https://megabox.co.kr/on/oh/ohe/Event/selectGoodsStockPrco.do"
 
 # 요청에 사용할 goodsNo
 payload = {
-    "goodsNo": "FG000251"  # 굿즈 ID 예시
-}
+    # "goodsNo": "FG000251"  # 굿즈 ID 예시
+}   
 
 # 요청 헤더 설정
 headers = {
