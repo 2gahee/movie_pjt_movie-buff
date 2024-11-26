@@ -16,13 +16,13 @@
             <div class="carousel-inner">
                 <div class="carousel-item active" @click="watchDetail(bestRecommend.id)">
                 <img :src=imgString(bestRecommend) class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
+                <div class="carousel-caption d-none d-md-block" style="position: absolute; top: 30px; font-size:35px">
                     <p>{{ bestRecommend.title }}</p>
                     </div>
                 </div>
                 <div v-for="movie in recommendList" class="carousel-item" @click="watchDetail(movie.id)">
                     <img :src=imgString(movie) class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption d-none d-md-block" style="position: absolute; top: 30px; font-size:35px">
                         <p>{{ movie.title }}</p>
                     </div>
                 </div>  

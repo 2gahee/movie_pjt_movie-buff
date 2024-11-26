@@ -14,6 +14,7 @@ export const useMovieStore = defineStore('movie', () => {
   const eventList = ref([])
   const savedToken = localStorage.getItem('token') || null
   const token = ref(savedToken)
+  const ytKey = 'AIzaSyATa6eoWH77yQw6Sr4-Ot2JFa-mZ4-c1fA'
   const userInfo = ref({
     username: '',
     nickname: '',
@@ -352,7 +353,27 @@ const searchMovies = async function (keyword = '') {
       throw err
   }
 }
+const getVideoId = async (title) => {
+  try {
+    const videoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${title}+trailer&type=video&maxResults=5&key=${ytKey}`
+    const response = await fetch(videoUrl);
+    const data = await response.json();
+    if (data.items && data.items.length > 0) {
+      const videoId = data.items[0].id.videoId;
+      // console.log(videoId)
+      return videoId;
+    } else {
+      console.log('No trailer found.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching YouTube trailer:', error);
+    return null;
+  }
+}
+
 
   return { articles, API_URL, getArticles, signUp, logIn, logOut, token,
     getNowOns, isLogin, nowOns, getMovieDetails, movieLike, savedToken,
-    getLikedMovies, likedMovies,userInfo, fetchUserInfo, updateUserProfile, getMoviePicks, movies, getEvents, eventList, searchMovies}})
+    getLikedMovies, likedMovies,userInfo, fetchUserInfo, updateUserProfile,
+    getMoviePicks, movies, getEvents, eventList, searchMovies, getVideoId}})

@@ -37,9 +37,10 @@
         <div class="movie-info">
           <blockquote class="tagline">"{{ movie.tagline }}"</blockquote>
           <p class="overview">{{ movie.overview }}</p>
+          <div id="player" v-if="videoId"></div>
         </div>
       </div>
-
+      
       <MovieEvent :title="title"/>
 
     </div>
@@ -47,12 +48,12 @@
       <p>영화 정보를 불러오는 중...</p>
     </div>
   </div>
-</template>
+</template> 
 
 <script setup>
 import { useRoute } from 'vue-router'
 import { useMovieStore } from '@/stores/counter'
-import { onMounted, ref, computed, watch } from 'vue'
+import { onMounted, ref, nextTick } from 'vue'
 import MovieEvent from '@/components/MovieEvent.vue';
 
 const store = useMovieStore()
@@ -62,7 +63,7 @@ const genreString = ref('')
 const isLiked = ref(null)
 const movieId = Number(route.params.id)
 const title = ref(null)
-
+const videoId = ref('')
 onMounted(async () => {
   if (!movieId || isNaN(movieId)) {
     console.error("유효하지 않은 movieId입니다.")
@@ -75,7 +76,10 @@ onMounted(async () => {
     
     genreString.value = movie.value.genres.map(genre => genre.name).join(" / ");
     title.value = movie.value.title
-    
+    videoId.value = await store.getVideoId(title.value)
+    if (videoId.value) {
+      nextTick(() => {loadYouTubePlayer(videoId.value)
+    })}
     const likedMovie = store.likedMovies.find((movie) => movie.id === movieId);
     isLiked.value = !!likedMovie;
   } catch (error) {
@@ -90,6 +94,34 @@ const likeToggle = async function(movieId) {
   } catch (error) {
     console.error("좋아요 토글 중 오류 발생:", error);
   }
+}
+function loadYouTubePlayer(videoId) {
+  // 이미 로드된 경우, 다시 로드하지 않도록 방지
+  if (window.YT && window.YT.Player) {
+    new YT.Player('player', {
+      height: '360',
+      width: '640',
+      videoId: videoId,
+      events: {
+      }
+    });
+  } else {
+    let tag = document.createElement('script')
+    tag.src = "https://www.youtube.com/iframe_api"
+    let firstScriptTag = document.getElementsByTagName('script')[0]
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+
+
+  window.onYouTubeIframeAPIReady = function() {
+    new YT.Player('player', {
+      height: '360',
+      width: '640',
+      videoId: videoId,
+      events: {
+      }
+    })
+  }
+}
 }
 </script>
 
@@ -194,7 +226,7 @@ const likeToggle = async function(movieId) {
 
 .movie-info {
   width: 70%;
-  margin-top: 5rem;
+  margin-top: 1rem;
 }
 
 .tagline {
