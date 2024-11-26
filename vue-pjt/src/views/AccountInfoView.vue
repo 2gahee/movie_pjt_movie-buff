@@ -95,7 +95,7 @@ onMounted(() => {
 .edit-button {
     display: inline-block;
     padding: 0.6rem 1.2rem;
-    background-color: #3498db;
+    background-color: #212529;;
     color: white;
     border-radius: 8px;
     text-decoration: none;
@@ -104,7 +104,7 @@ onMounted(() => {
 }
 
 .edit-button:hover {
-    background-color: #2980b9;
+    background-color: #555;
 }
 
 .profile-content {

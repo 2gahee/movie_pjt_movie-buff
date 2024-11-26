@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="description">
-        <h1>My Activities</h1>
+            <img src="/images/mypagelogo.png" alt="로고" class="mypagelogo" />
         </div>
         <AccountArticles />
         <AccountMovieLikes />
@@ -21,4 +21,9 @@ import AccountMovieLikes from '@/components/AccountMovieLikes.vue'
     margin-top: 2rem; 
     font-weight: bold;
 }
+.mypagelogo {
+  width: 10rem;
+  height: auto; 
+}
+
 </style>

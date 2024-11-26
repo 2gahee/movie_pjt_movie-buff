@@ -1,7 +1,7 @@
 <template>
   <div id="ArticleCreate">
     <div class="description">
-    <h1>{{ isEditMode ? "게시글 수정" : "게시글 작성" }}</h1>
+      <img :src="isEditMode ? '/images/updatearticlelogo.png' : '/images/createarticle.png'" :alt="isEditMode ? '게시글 수정' : '게시글 작성'"  class="update-createlogo"/>
     </div>
     <form @submit.prevent="submitArticle">
       <table> 
@@ -126,6 +126,11 @@
   font-weight: bold;
   display: flex;
   justify-content: center;
+}
+
+.update-createlogo {
+  width: 10rem;
+  height: auto; 
 }
 
 table {

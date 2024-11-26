@@ -73,12 +73,25 @@
     flex-direction: column;
     align-items: center;
 }
+
 .carousel-caption{
     font-size : 30px;
     font-weight : bold;
     color: white;
     text-align: left;
 }
+/* .carousel {
+  width: 80%; 
+  height: 40rem;
+  margin: 0 auto; 
+  margin-bottom: 5rem;
+}
+.carousel-item img {
+  width: 100%; 
+  height:40rem; 
+  object-fit: cover; 
+} */
+
 .btn {
     background-color: #D72323;
     box-shadow: 0 0 0 1px #c63702 inset,

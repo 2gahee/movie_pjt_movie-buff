@@ -44,7 +44,7 @@ const goTotalList = function() {
 
 <style scoped>
 .btn-table {
- margin-top: 3%;
+ margin-top: 1%;
  display: flex;
  flex-direction: column;
  align-items: center;  
@@ -70,4 +70,9 @@ color: #FFFF;
     color: #333;
 }
 
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* 가로 스크롤 제거 */
+}
 </style>

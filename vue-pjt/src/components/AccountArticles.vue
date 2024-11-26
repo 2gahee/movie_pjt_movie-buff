@@ -85,11 +85,11 @@ const goCreate = function() {
 }
 
 .btn-table {
- margin-top: 3%;
+ margin-top: 1%;
  display: flex;
  flex-direction: column;
  align-items: center;  
- width: 70%; 
+ width: 95%; 
  margin-left: auto; 
  margin-right: auto; 
  margin-bottom: 4rem;
@@ -107,6 +107,36 @@ display: flex;
 justify-content: center;
 margin-top: 2%;
 width: 100%;
+}
+
+.pagination {
+  background-color: transparent; 
+}
+
+.page-link {
+  color: #6c757d; 
+  background-color: #f8f9fa; 
+  border: 1px solid #dee2e6; 
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; 
+}
+
+.page-link:hover {
+  color: #ffffff; 
+  background-color: #343a40; 
+  border-color: #343a40; 
+}
+
+.page-item.active .page-link {
+  color: #ffffff; 
+  background-color: #212529; 
+  border-color: #212529; 
+  font-weight: bold; 
+}
+
+.page-item.disabled .page-link {
+  color: #adb5bd; 
+  background-color: #e9ecef; 
+  border-color: #dee2e6; 
 }
 
 .no-articles {

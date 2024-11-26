@@ -21,7 +21,10 @@
             <div class="col-md-6 col-lg-4">
               <div class="card shadow-lg">
                 <div class="card-body">
-                  <h3 class="card-title text-center mb-4">로그인</h3>
+                  <div class="home-description">
+                    <img src="/images/movieduku.png" alt="로고" class="moviedukulogo" />
+                  </div>
+                  
                   <form @submit.prevent="logIn">
                     <!-- 아이디 입력 -->
                     <div class="form-group">
@@ -49,7 +52,7 @@
   
                     <!-- 로그인 버튼 -->
                     <div class="d-grid gap-2 mt-4">
-                      <button class="btn btn-primary btn-lg" type="submit">
+                      <button class="btn btn-dark btn-lg" type="submit">
                         로그인
                       </button>
                     </div>
@@ -115,18 +118,8 @@ const logIn = function () {
   font-size: 1rem;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
-}
-
 .text-center a {
-  color: #007bff;
+  color: #000;
 }
 
 .text-center a:hover {
@@ -136,5 +129,18 @@ const logIn = function () {
 .d-grid {
   display: grid;
   gap: 1rem;
+}
+
+.home-description{
+    margin-top: 2rem; 
+    font-weight: bold;
+    display: flex;     
+    flex-direction: column;
+    align-items: center;
+}
+
+.moviedukulogo {
+  width: 10rem;
+  height: auto; 
 }
 </style>
