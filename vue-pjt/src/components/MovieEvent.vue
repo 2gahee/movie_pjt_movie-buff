@@ -1,19 +1,25 @@
 <template>
+    
     <div class="event-box">
         <div v-if="movieEvent.length" class="event-title">
             관련 이벤트
             <div v-for="event in movieEvent" :key="event.goods_name">
-                <p class="event-info">{{ event.goods_name }} <a href="https://www.megabox.co.kr/booking">(메가박스)</a></p>
-                <div v-for="info in event.goods_info" :key="info.branch" class="event-details">
-                    {{ info.region.split(" ")[0]}} - {{info.branch}} : {{ info.stock_status }}
+                <p class="event-info">{{ event.name }} <a href="https://www.megabox.co.kr/booking">(메가박스)</a></p>
+                {{ event[1] }}
+                <div v-for="(info, name, index) in event.cinemas[1]" :key="name" class="event-details">
+                    <!-- {{ info.region.split(" ")[0]}} - {{info.branch}} : {{ info.stock_status }} -->
+                      <p v-if="name !== 'cinema'">{{ name }}점 - 재고 {{ info.stock }}, 약 {{ Math.round(info.time / 60) }}분 소요</p>
                 </div>
             </div>
         </div>
         <div v-else class="event-title2">
             확인된 이벤트 정보가 없습니다
         </div>
+        <div id="map" style="width:500px;height:400px;"></div>
+        
     </div>
 </template>
+
 
 <script setup>
 import { onMounted, computed } from 'vue';
@@ -34,14 +40,17 @@ const movieEvent = computed(() => {
     if (!props.title) {
         return []
     }
-    
     return eventList.filter((event) => 
-    // console.log(event.goods_name),
-    // console.log(normalizeString(event.goods_name)),
-    // console.log(normalizeString(props.title)),
-
-    normalizeString(event.goods_name).includes(normalizeString(props.title))
+    event.name.includes(props.title)
     )})
+
+// let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+// let options = { //지도를 생성할 때 필요한 기본 옵션
+// 	center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+// 	level: 3 //지도의 레벨(확대, 축소 정도)
+// };
+
+// let map = new kakao.maps.Map(container, options)
 </script>
 
 <style scoped>

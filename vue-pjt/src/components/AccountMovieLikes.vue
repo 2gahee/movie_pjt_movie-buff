@@ -1,7 +1,5 @@
 <template>
     <div>
-        <h2 class="movies-title">{{ store.userInfo.username }}님의 Movies</h2>
-        <!-- <h4 class="movies-genre">{{ store.userInfo.username }}님이 선호하는 장르: </h4> -->
         <div v-if="likedList.length === 0" class="no-movies">
             <p>좋아요 누른 영화가 없습니다. 좋아요를 눌러보세요!</p>
             <button @click="goMovies" type="button" class="btn btn-dark">전체 영화 보러가기</button>&ensp;
@@ -43,13 +41,9 @@ const goCurrentMovies = function() {
   margin-top: 2rem;        
   margin-left: 3rem;    
 }
-/* .movies-genre {
-  margin-top: 1rem;        
-  margin-left: 3rem;    
-} */
 
 .no-movies {
-  /* text-align: center; */
+  text-align: center;
   margin-top: 3rem;
   margin-left: 3rem;
 }

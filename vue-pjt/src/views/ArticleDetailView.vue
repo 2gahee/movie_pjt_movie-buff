@@ -1,6 +1,6 @@
 <template>
   <div class="description">
-      <h1>게시판</h1>
+    <img src="/images/articlelogo.png" alt="로고" class="articlelogo" />
       <div class="container p-5" v-if="article">
 
 
@@ -12,9 +12,11 @@
 
 
   <div class="d-flex justify-content-end mt-2">
-      <b>작성자: {{ article.user.username }}</b>&ensp;
-      <b>작성일: {{ article.created_at }}</b>&ensp;
-      <b>수정일: {{ article.updated_at }}</b>
+      작성일: {{ article.created_at }}&ensp;
+      수정일: {{ article.updated_at }}
+  </div>
+  <div class="d-flex justify-content-end mt-2">
+  작성자: {{ article.user.username }}&ensp;
   </div>
 
   <!-- 게시글내용 -->
@@ -26,9 +28,9 @@
       </div>
   </div>
 
-  <div>
-    <button v-if="article.user.username != currentUsername && is_liked" @click="likeArticle">좋아요 취소</button>
-    <button v-if="article.user.username != currentUsername && !is_liked" @click="likeArticle">좋아요</button>
+  <div class="like-section">
+    <button v-if="article.user.username != currentUsername && is_liked" @click="likeArticle" class="like-btn">좋아요 취소</button>
+    <button v-if="article.user.username != currentUsername && !is_liked" @click="likeArticle" class="like-btn">좋아요</button>
     <p>좋아요 {{ like_count }}개</p>
   </div>
   <!-- 댓글 -->
@@ -37,8 +39,8 @@
        <CommentCreate :id="id" @add-comment="addComment"/>
     
       <!-- 댓글목록 -->
-       <!-- <CommentList :comments="comments" :id="id" @update:comments="updateComments"/>   -->
        <CommentList :comments="paginatedComments" :id="id" @update:comments="updateComments" />
+       
        <div class="row">
         <nav id="pagination" aria-label="Page navigation">
           <ul class="pagination justify-content-center">
@@ -203,6 +205,11 @@ router.push({ name: 'editArticle', params: { id } }); //해당 게시글 ID 라�
      flex-direction: column;
      align-items: center;
   }
+
+  .articlelogo {
+  width: 10rem;
+  height: auto; 
+}
   #contentbox{
       background-color: #FFFF;
       height: auto;
@@ -216,11 +223,44 @@ router.push({ name: 'editArticle', params: { id } }); //해당 게시글 ID 라�
   margin-top: 1rem;
 }
 .like-btn {
-  background-color: #0d6efd;
+  background-color: #D72323;
   color: white;
   border: none;
   border-radius: 4px; 
   font-size: 1rem;
-  cursor: pointer;
+  cursor: pointer
+}
+.like-btn:active {
+  background-color: #a80505; 
+}
+
+.pagination {
+  background-color: transparent; 
+}
+
+.page-link {
+  color: #6c757d; 
+  background-color: #f8f9fa; 
+  border: 1px solid #dee2e6; 
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; 
+}
+
+.page-link:hover {
+  color: #ffffff; 
+  background-color: #343a40; 
+  border-color: #343a40; 
+}
+
+.page-item.active .page-link {
+  color: #ffffff; 
+  background-color: #212529;
+  border-color: #212529; 
+  font-weight: bold; 
+}
+
+.page-item.disabled .page-link {
+  color: #adb5bd; 
+  background-color: #e9ecef; 
+  border-color: #dee2e6; 
 }
 </style>

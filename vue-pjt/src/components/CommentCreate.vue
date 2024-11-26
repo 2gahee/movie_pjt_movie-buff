@@ -3,7 +3,7 @@
     <div class="card-body">
         <textarea class="form-control" rows="2" name="comment" placeholder="댓글을 입력하세요" v-model="commentContent"></textarea>
         <div class="d-flex justify-content-end">
-            <button class="btn btn-outline-primary mt-1" @click="submitComment">댓글등록</button>
+            <button class="btn btn-dark mt-1" @click="submitComment">댓글등록</button>
         </div>
     </div>
      

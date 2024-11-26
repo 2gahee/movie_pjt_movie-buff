@@ -1,9 +1,14 @@
     <template>
         <div class="home-description">
             <img src="/images/recommendlogo.png" alt="로고" class="recommendlogo" />
-            <p>아래 버튼을 누르면 굿즈 재고를 기반으로 영화를 추천드려요!</p>
-            <button class="btn btn-lg" @click.prevent="goodsRecommend">UPDATE</button> 
-            <div v-if="bestRecommend" id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            
+            <p>{{ (isPressed && !eventMovies.length) ? "지점 별 굿즈 재고 정보를 수집중입니다..." : "아래 버튼을 누르면 다른 방식으로 영화를 추천드려요!" }}</p>
+            
+            
+            <div v-if="isLoading">
+            Loading movies...
+            </div>
+            <div v-else-if="bestRecommend" id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselAutoplaying" data-bs-slide-to="0" class="active" aria-current="true"></button>
                     <button v-for="(movie, index) in recommendList" type="button" data-bs-target="#carouselAutoplaying" :data-bs-slide-to=(index+1) ></button>
@@ -11,13 +16,13 @@
             <div class="carousel-inner">
                 <div class="carousel-item active" @click="watchDetail(bestRecommend.id)">
                 <img :src=imgString(bestRecommend) class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
+                <div class="carousel-caption d-none d-md-block" style="position: absolute; top: 30px; font-size:35px">
                     <p>{{ bestRecommend.title }}</p>
                     </div>
                 </div>
                 <div v-for="movie in recommendList" class="carousel-item" @click="watchDetail(movie.id)">
                     <img :src=imgString(movie) class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption d-none d-md-block" style="position: absolute; top: 30px; font-size:35px">
                         <p>{{ movie.title }}</p>
                     </div>
                 </div>  
@@ -32,38 +37,148 @@
             </button>
             </div>
             <div v-else>Error while loading</div>
+            <div class="updatebutton-container" style="display: flex; justify-content: center;">
+                <button class="btn btn-lg" @click.prevent="toggleEvent">{{ showEvent ? "상영 중인 영화" : "이벤트 중인 영화" }}</button>
+            </div>
         </div>
         
     </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useMovieStore } from '@/stores/counter';
 import { useRouter } from 'vue-router'
+
 const router = useRouter();
 const store = useMovieStore()
+const eventMovies = ref([])
+const showEvent = ref(false)
+const isLoading = ref(true)
+const isPressed = ref(null)
+// Fetch movies on component mount
+onMounted(async () => {
+    try {
+        console.log("Fetching now-on movies...");
+        await store.getNowOns(); // 데이터 로드
+        isLoading.value = false;
 
-
-onMounted(async function() {
-    await store.getNowOns()
+        // 디버깅: 데이터 확인
+        console.log("nowOns:", store.nowOns.value);
+        console.log("wholeRecommendList:", wholeRecommendList.value);
+        console.log("recommendList:", recommendList.value);
+    } catch (error) {
+        console.error("Failed to get now-on movies:", error);
+        isLoading.value = false;
+    }
 })
-const wholeRecommendList = computed(() => store.nowOns)
-const bestRecommend = computed(() => wholeRecommendList.value.slice(0,1)[0])
-const recommendList = computed(() => wholeRecommendList.value.slice(1, 5))
+
+const wholeRecommendList = computed(() => {
+    // When show event is true and event movies exist, use event movies
+    if (showEvent.value && eventMovies.value.length) {
+        return eventMovies.value
+    }
+    // Otherwise use now on movies from the store
+    return store.nowOns || []
+})
+
+const bestRecommend = computed(() => {
+    const list = wholeRecommendList.value
+    return list.length ? list[0] : null
+})
+
+const recommendList = computed(() => {
+    const list = wholeRecommendList.value
+    return list.length > 1 ? list.slice(1, 5) : []
+})
+
 const watchDetail = function(id) {
     router.push({name:'detail', params: {id}})
 }
+
 const imgString = function(movie) {
-    return `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+    return movie ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}` : ''
 }
+
+const toggleEvent = async function() {
+    try {
+        // If switching to event movies and no event movies yet, fetch them
+        isPressed.value = true
+        if (!showEvent.value) {
+            if (!eventMovies.value.length) {
+                await goodsRecommend()
+            }
+        }
+        
+        // Toggle the show event flag
+        showEvent.value = !showEvent.value
+    } catch (error) {
+        console.error('Error in toggleEvent:', error)
+    }
+}
+
 const goodsRecommend = async function() {
-    await store.getEvents()
-    if (store.eventList && store.eventList.length) {
-        console.log(store.eventList)
-        localStorage.setItem("megabox", JSON.stringify(store.eventList))
+    try {
+        // First, log the events
+        await store.getEvents()
+        console.log('Events list:', store.eventList)
+
+        if (store.eventList && store.eventList.length) {
+            localStorage.setItem("megabox", JSON.stringify(store.eventList))
+            
+            // Log the first event's details
+            console.log('First event:', store.eventList[0])
+            console.log('First event cinemas:', store.eventList[0].cinemas)
+
+            // Ensure the first cinema exists before accessing it
+            if (!store.eventList[0].cinemas || !store.eventList[0].cinemas.length) {
+                console.error('No cinemas found in the event')
+                return
+            }
+
+            eventMovies.value = await Promise.all(store.eventList.map(async (event) => {
+                // Ensure the event has cinemas
+                if (!event.cinemas || !event.cinemas.length) {
+                    console.error('Event without cinemas:', event)
+                    return null
+                }
+
+                // Safer title extraction
+                const title = Object.keys(event.cinemas[0])
+                    .filter(key => !isNaN(key))
+                    .sort((a, b) => a - b)
+                    .map(key => event.cinemas[0][key])
+                    .join("")
+
+                console.log('Extracted title:', title)
+
+                try {
+                    const movies = await store.searchMovies(title)
+                    console.log('Search movies result:', movies)
+
+                    if (movies && Array.isArray(movies)) {
+                        const movie = movies.find((movie) => movie.title === title)
+                        console.log('Found movie:', movie)
+                        return movie || null
+                    } else {
+                        console.error('Invalid movies response:', movies)
+                        return null
+                    }
+                } catch (searchError) {
+                    console.error('Error searching movies:', searchError)
+                    return null
+                }
+            }))
+            eventMovies.value = eventMovies.value.filter(movies => movies != null)
+            console.log('Final eventMovies:', eventMovies.value)
+        } else {
+            console.error('No events found')
+        }
+    } catch (error) {
+        console.error('Error in goodsRecommend:', error)
     }
 }
 </script>
+
 
 <style scoped>
 .home-description{
@@ -73,12 +188,26 @@ const goodsRecommend = async function() {
     flex-direction: column;
     align-items: center;
 }
+
 .carousel-caption{
     font-size : 30px;
     font-weight : bold;
     color: white;
     text-align: left;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); 
 }
+.carousel {
+  width: 95%; 
+  height: 40rem;
+  margin: 0 auto; 
+  margin-bottom: 1rem;
+}
+.carousel-item img {
+  width: 100%; 
+  height:40rem; 
+  object-fit: cover; 
+}
+
 .btn {
     background-color: #D72323;
     box-shadow: 0 0 0 1px #c63702 inset,
@@ -87,7 +216,7 @@ const goodsRecommend = async function() {
     0 8px 0 1px rgba(0,0,0,0.4),
     0 8px 8px 1px rgba(0,0,0,0.5);
     margin-bottom: 2rem;
-    width: 7rem;
+    width: 12rem;
     height: 2.5rem;
     text-align: center;
     color: #fff;
@@ -100,121 +229,9 @@ const goodsRecommend = async function() {
                 0 4px 0 0 #C24032,
                 0 4px 4px 1px rgba(0,0,0,0.4);  
 }
+
 .recommendlogo {
   width: 10rem;
   height: auto; 
 }
 </style>
-
-<!-- <script setup>
-import { ref, computed } from 'vue';
-import { useMovieStore } from '@/stores/counter';
-
-const store = useMovieStore();
-const isNowOn = ref(true); // 현재 상태 (true: nowOns, false: eventList)
-const loading = ref(false); // 로딩 상태
-const displayList = ref([]); // 현재 표시할 리스트
-
-// 초기 nowOns 리스트 가져오기
-const fetchNowOns = async () => {
-    loading.value = true;
-    await store.getNowOns();
-    displayList.value = store.nowOns;
-    loading.value = false;
-};
-
-// 이벤트 리스트 가져오기
-const fetchEventList = async () => {
-    loading.value = true;
-    await store.getEvents();
-    displayList.value = store.eventList;
-    loading.value = false;
-};
-
-// 토글 함수
-const toggleNowons = async () => {
-    if (loading.value) return; // 이미 로딩 중일 경우 중복 호출 방지
-    isNowOn.value = !isNowOn.value;
-
-    if (isNowOn.value) {
-        await fetchNowOns();
-    } else {
-        await fetchEventList();
-    }
-};
-
-// 슬라이드 추천 리스트
-const recommendList = computed(() => displayList.value.slice(1, 5)); // 슬라이드에 표시할 데이터
-
-// 컴포넌트 초기화 시 초기 리스트 설정
-fetchNowOns();
-</script>
-
-<template>
-    <div class="home-description">
-        <h1>무비덕후 영화 추천</h1>
-        <p>갱신 버튼을 누르면 굿즈 재고를 기반으로 영화를 추천드려요!</p>
-
-        <button class="btn btn-primary btn-lg" @click="toggleNowons">
-            {{ isNowOn ? "이벤트 보기" : "현재 상영작 보기" }}
-        </button>
-
-        <!-- 로딩 상태 표시 -->
-        <!-- <div v-if="loading" class="loading-spinner">
-            로딩 중...
-        </div> -->
-
-        <!-- 리스트 렌더링 -->
-        <!-- <div v-else-if="displayList.length">
-            <div id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselAutoplaying" data-bs-slide-to="0" class="active" aria-current="true"></button>
-                    <button v-for="(movie, index) in recommendList" :key="index" type="button" data-bs-target="#carouselAutoplaying" :data-bs-slide-to="index + 1"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div v-for="(movie, index) in recommendList" :key="movie.id" :class="['carousel-item', { active: index === 0 }]">
-                        <div class="carousel-caption d-none d-md-block">
-                            <p>{{ movie.title }}</p>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div> -->
-
-        <!-- 데이터가 없는 경우 -->
-        <!-- <div v-else>
-            데이터가 없습니다.
-        </div>
-    </div>
-</template>
-
-
-
-<style scoped>
-.loading-spinner {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-top: 20px;
-}
-.home-description{
-       margin-top: 2rem; 
-       font-weight: bold;
-       display: flex;     
-       flex-direction: column;
-       align-items: center;
-    }
-.carousel-caption{
-    font-size : 30px;
-    font-weight : bold;
-    color: white;
-    text-align: left;
-}
-</style> --> -->
