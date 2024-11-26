@@ -1,7 +1,7 @@
 <template>
     <div class="all">
     <div class="description">
-        <h1>게시판</h1>
+      <img src="/images/articlelogo.png" alt="로고" class="articlelogo" />
     </div>
    
     <div class="row" id="search-box">
@@ -137,7 +137,6 @@ watchEffect(() => {
 .search-form {
   width: 550px;
   margin: 0 auto;
-  margin-top: 1rem;  
 }
 
 .search-form input {
@@ -187,6 +186,9 @@ watchEffect(() => {
   margin-top: 1rem;
 }
 
-
+.articlelogo {
+  width: 10rem;
+  height: auto; 
+}
 
 </style>

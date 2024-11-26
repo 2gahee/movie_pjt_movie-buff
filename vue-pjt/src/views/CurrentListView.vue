@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="description">
-        <h1>Now On</h1>
+            <img src="/images/nowonlogo.png" alt="로고" class="nowonlogo" />
         </div>
         <div class="MovieCardContainer">
         <MovieCard v-for="movie in nowOnList" :key="movie.id" @click="watchDetail(movie.id)" :movie="movie"/>
@@ -38,5 +38,9 @@ const watchDetail = function(id) {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+.nowonlogo {
+  width: 10rem;
+  height: auto; 
 }
 </style>

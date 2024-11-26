@@ -1,7 +1,7 @@
     <template>
         <div class="home-description">
-            <h1>무비덕후 영화 추천</h1>
-            <p>갱신 버튼을 누르면 굿즈 재고를 기반으로 영화를 추천드려요!</p>
+            <img src="/images/recommendlogo.png" alt="로고" class="recommendlogo" />
+            <p>아래 버튼을 누르면 굿즈 재고를 기반으로 영화를 추천드려요!</p>
             <button class="btn btn-lg" @click.prevent="goodsRecommend">UPDATE</button> 
             <div v-if="bestRecommend" id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
@@ -99,5 +99,9 @@
                 0 0 0 2px #d7242426 inset,
                 0 4px 0 0 #C24032,
                 0 4px 4px 1px rgba(0,0,0,0.4);  
+}
+.recommendlogo {
+  width: 10rem;
+  height: auto; 
 }
 </style>

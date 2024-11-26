@@ -11,7 +11,7 @@ const isLogin = computed(() => movieStore.isLogin) // 로그인 상태
 <template>
   <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" >
     <div class="container-fluid">
-      <RouterLink to="/" class="navbar-brand"><img src="/images/logo2.png" alt="로고" class="navbar-logo" /></RouterLink>
+      <RouterLink to="/" class="navbar-brand"><img src="/images/logo4.png" alt="로고" class="navbar-logo" /></RouterLink>
       <button
         class="navbar-toggler" 
         type="button" 
