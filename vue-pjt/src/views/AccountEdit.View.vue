@@ -282,25 +282,4 @@ const handleSubmit = async () => {
     cursor: not-allowed;
 }
 
-@media (max-width: 640px) {
-    .edit-profile-container {
-        margin: 1rem;
-    }
-
-    .edit-header {
-        padding: 1rem 1.5rem;
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-
-    .back-button {
-        width: 100%;
-        text-align: center;
-    }
-
-    .submit-button {
-        width: 100%;
-    }
-}
 </style>

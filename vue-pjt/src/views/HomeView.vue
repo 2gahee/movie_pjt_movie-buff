@@ -4,7 +4,7 @@
             
             <p>{{ (isPressed && !eventMovies.length) ? "지점 별 굿즈 재고 정보를 수집중입니다..." : "아래 버튼을 누르면 다른 방식으로 영화를 추천드려요!" }}</p>
             
-            <button class="btn btn-lg" @click.prevent="toggleEvent">{{ showEvent ? "상영 중인 영화" : "이벤트 중인 영화" }}</button>
+            
             <div v-if="isLoading">
             Loading movies...
             </div>
@@ -37,6 +37,9 @@
             </button>
             </div>
             <div v-else>Error while loading</div>
+            <div class="updatebutton-container" style="display: flex; justify-content: center;">
+                <button class="btn btn-lg" @click.prevent="toggleEvent">{{ showEvent ? "상영 중인 영화" : "이벤트 중인 영화" }}</button>
+            </div>
         </div>
         
     </template>
@@ -191,6 +194,18 @@ const goodsRecommend = async function() {
     font-weight : bold;
     color: white;
     text-align: left;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); 
+}
+.carousel {
+  width: 95%; 
+  height: 40rem;
+  margin: 0 auto; 
+  margin-bottom: 1rem;
+}
+.carousel-item img {
+  width: 100%; 
+  height:40rem; 
+  object-fit: cover; 
 }
 
 .btn {
@@ -214,6 +229,7 @@ const goodsRecommend = async function() {
                 0 4px 0 0 #C24032,
                 0 4px 4px 1px rgba(0,0,0,0.4);  
 }
+
 .recommendlogo {
   width: 10rem;
   height: auto; 
