@@ -5,7 +5,7 @@
 # from django.shortcuts import render
 # from .models import UserMovie, MoviePicks
 # from .serializers import MoviePicksSerializer
-import requests
+import requests, re
 # from rest_framework.exceptions import NotFound
 # from django.conf import settings
 # from django.contrib.auth.decorators import login_required
@@ -31,7 +31,10 @@ driver = webdriver.Chrome(
 
 driver.get("https://www.google.com")
 User_Agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+# event_urls = ["https://www.megabox.co.kr/event/megabox", "https://www.megabox.co.kr/event/movie"]
+# for url in event_urls:
 url = "https://www.megabox.co.kr/event/megabox"
+# url = "https://www.megabox.co.kr/event/movie"
 driver.get(url)
 
 # 페이지 로드 후 HTML 소스 가져오기
@@ -40,7 +43,10 @@ soup = BeautifulSoup(html, 'html.parser')
 
 # 이벤트 리스트 가져오기
 a_tags = soup.select("#event-list-wrap > div > div > ul > li > a")
+
+
 event_no_list = [tag['data-no'] for tag in a_tags if 'data-no' in tag.attrs]
+
 goods_list = []
 goods_url = "https://megabox.co.kr/on/oh/ohe/Event/selectGoodsStockPrco.do"
 for num in event_no_list:
@@ -53,6 +59,11 @@ for num in event_no_list:
     if response.status_code == 200:
         html = response.text
         event_soup = BeautifulSoup(html, 'html.parser')
+        h2_content = event_soup.select_one("#contents > div > h2").text
+        result = re.search(r"<(.*?)>", h2_content)
+        if result:
+            movie_title = result.group(1)
+            
         goodsBtn = event_soup.select_one("#btnSelectGoodsStock")
         if goodsBtn:
             payload = {
@@ -77,7 +88,7 @@ for num in event_no_list:
                 for branch in branches:
                     branch_name = branch.find("a").text.strip()  # 지점 이름
                     stock_status = branch.find("span").text.strip()  # 보유 상태
-                    if stock_status == "보유" or "소량보유":
+                    if stock_status != "소진":
                     # 정보 저장
                         goods_stock_info.append({
                             "region": region_name,
@@ -88,5 +99,4 @@ for num in event_no_list:
                 goods_list.append({"goods_name": goodsBtn["data-nm"], "goods_info": goods_stock_info})
 print(goods_list)
 driver.quit()
-    # return JsonResponse(goods_list, safe=False)
 

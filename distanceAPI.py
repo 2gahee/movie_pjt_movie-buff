@@ -11,7 +11,7 @@ goods_list = [{'goods_name': '모아나 2 오리지널 티켓', 'goods_info': [{
 KAKAO_API_KEY = '5244812f340e17fb3d1929b739bf8ff8'
 cd_url = "https://dapi.kakao.com/v2/local/search/keyword.json"
 route_url = "https://apis-navi.kakaomobility.com/v1/directions"
-origin = {'lng': 127.012207, 'lat': 37.508130} # temp
+origin = {'lng': 127.0317056, 'lat': 37.5095296} # temp
 map_dict = dict()
 for goods in goods_list:
     name = goods['goods_name']
@@ -40,7 +40,7 @@ for goods in goods_list:
             if response.status_code == 200:
                 data = response.json()
                 # print(data)
-                time =  data["routes"][0]["summary"]["distance"]
+                time =  data["routes"][0]["summary"]["duration"]
                 map_dict.update({branch : time})
             else:
                 print(f"Error fetching coordinates for {branch_string}: {response.status_code}, {response.text}")
