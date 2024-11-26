@@ -4,7 +4,6 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 
-
 export const useMovieStore = defineStore('movie', () => {
   const articles = ref([])
   const nowOns = ref([])
@@ -14,7 +13,7 @@ export const useMovieStore = defineStore('movie', () => {
   const eventList = ref([])
   const savedToken = localStorage.getItem('token') || null
   const token = ref(savedToken)
-  const ytKey = 'AIzaSyATa6eoWH77yQw6Sr4-Ot2JFa-mZ4-c1fA'
+  const ytKey = import.meta.env.VITE_YT_KEY
   const userInfo = ref({
     username: '',
     nickname: '',
