@@ -28,9 +28,9 @@
       </div>
   </div>
 
-  <div>
-    <button v-if="article.user.username != currentUsername && is_liked" @click="likeArticle">좋아요 취소</button>
-    <button v-if="article.user.username != currentUsername && !is_liked" @click="likeArticle">좋아요</button>
+  <div class="like-section">
+    <button v-if="article.user.username != currentUsername && is_liked" @click="likeArticle" class="like-btn">좋아요 취소</button>
+    <button v-if="article.user.username != currentUsername && !is_liked" @click="likeArticle" class="like-btn">좋아요</button>
     <p>좋아요 {{ like_count }}개</p>
   </div>
   <!-- 댓글 -->
@@ -231,9 +231,8 @@ router.push({ name: 'editArticle', params: { id } }); //해당 게시글 ID 라�
   cursor: pointer
 }
 .like-btn:active {
-  background-color: #8b1111; 
+  background-color: #a80505; 
 }
-
 
 .pagination {
   background-color: transparent; 

@@ -1,5 +1,4 @@
 <template>
-   <h2 class="accountinfo-title">{{ store.userInfo.username }}님의 AccountInfo</h2>
   <div class="mypage-container">
       <div class="profile-card">
           <div class="profile-header">

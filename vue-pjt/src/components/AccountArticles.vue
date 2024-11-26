@@ -1,5 +1,4 @@
 <template>
-    <h2 class="articles-title">{{ store.userInfo.username }}님의 Articles</h2>
     <div v-if="articleList.length === 0" class="no-articles">
         <p>작성하신 게시글이 없습니다. 게시글을 작성해보세요!</p>
         <button @click="goCreate" type="button" class="btn btn-dark">작성하기</button>
@@ -140,7 +139,7 @@ width: 100%;
 }
 
 .no-articles {
-  /* text-align: center; */
+  text-align: center;
   margin-top: 2rem;
   margin-left: 3rem;
  
