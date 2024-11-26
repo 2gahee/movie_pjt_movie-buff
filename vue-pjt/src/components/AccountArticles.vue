@@ -17,9 +17,9 @@
             <tbody>
                 <!-- 현재 페이지에 해당하는 게시글만 표시 -->
                 <tr v-for="article in paginatedArticles" :key="article.id">
-                    <td class="title"><RouterLink :to="{ name: 'articleDetail', params: { id: article.id } }">{{ article.title }} [{{ article.comment_count }}]</RouterLink></td>
+                    <td class="title"><RouterLink class='link' :to="{ name: 'articleDetail', params: { id: article.id } }">{{ article.title }} [{{ article.comment_count }}]</RouterLink></td>
                     <td class="created-at"><time>{{ article.created_at }}</time> </td>
-                    <td class="likes"></td>
+                    <td class="likes">{{ article.like_users.length }}</td>
                 </tr>
             </tbody>
         </table>
@@ -119,7 +119,15 @@ width: 100%;
 .no-articles p {
   font-size: 1.2rem;
   margin-bottom: 1rem;
-  
+}
+
+.link {
+    text-decoration: none;  
+    color: black;  
+}
+
+.link:hover {
+    color: #333;
 }
 
 

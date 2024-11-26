@@ -175,11 +175,16 @@ watchEffect(() => {
   margin-right:4px;
 }
 
-
-
-
 #pagination{
     margin-top: 2%;
+}
+
+.like-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 1rem;
 }
 
 

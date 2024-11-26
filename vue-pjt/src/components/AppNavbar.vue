@@ -60,11 +60,6 @@ const isLogin = computed(() => movieStore.isLogin) // 로그인 상태
           </template>
         </ul>
 
-
-
-
-
-
       </div>
     </div>
   </nav>
@@ -72,8 +67,8 @@ const isLogin = computed(() => movieStore.isLogin) // 로그인 상태
 
 
 <style  scoped>
-.navbar-logo {
-  max-height: 50px; /* 로고의 최대 높이를 50px로 설정 */
-  height: auto;     /* 비율을 유지하며 크기 조정 */
+.router-link-active {
+    color:  #ff0000; /* 현재 페이지는 항상 빨간색 */
+    font-weight: bold; /* 강조 효과 */
 }
 </style>

@@ -2,7 +2,7 @@
         <div class="home-description">
             <h1>무비덕후 영화 추천</h1>
             <p>갱신 버튼을 누르면 굿즈 재고를 기반으로 영화를 추천드려요!</p>
-            <button class="btn btn-primary btn-lg" @click.prevent="goodsRecommend">갱신</button>
+            <button class="btn btn-lg" @click.prevent="goodsRecommend">UPDATE</button> 
             <div v-if="bestRecommend" id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselAutoplaying" data-bs-slide-to="0" class="active" aria-current="true"></button>
@@ -66,17 +66,38 @@
 </script>
 
 <style scoped>
-    .home-description{
-       margin-top: 2rem; 
-       font-weight: bold;
-       display: flex;     
-       flex-direction: column;
-       align-items: center;
-    }
-    .carousel-caption{
-        font-size : 30px;
-        font-weight : bold;
-        color: white;
-        text-align: left;
-    }
+.home-description{
+    margin-top: 2rem; 
+    font-weight: bold;
+    display: flex;     
+    flex-direction: column;
+    align-items: center;
+}
+.carousel-caption{
+    font-size : 30px;
+    font-weight : bold;
+    color: white;
+    text-align: left;
+}
+.btn {
+    background-color: #D72323;
+    box-shadow: 0 0 0 1px #c63702 inset,
+    0 0 0 2px rgba(255,255,255,0.15) inset,
+    0 8px 0 0 #C24032,
+    0 8px 0 1px rgba(0,0,0,0.4),
+    0 8px 8px 1px rgba(0,0,0,0.5);
+    margin-bottom: 2rem;
+    width: 7rem;
+    height: 2.5rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: -1px 0px #000, 0px 1px #000, 1px 0px #000, 0px -1px #000;
+}
+.btn:active {
+    background-color: #B71C1C; 
+    box-shadow: 0 0 0 1px #a61b1b inset, 
+                0 0 0 2px #d7242426 inset,
+                0 4px 0 0 #C24032,
+                0 4px 4px 1px rgba(0,0,0,0.4);  
+}
 </style>
