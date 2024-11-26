@@ -67,11 +67,6 @@ def comment_detail(request, article_pk, comment_pk):
     if request.method == "DELETE":
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    # elif request.method == "PUT":
-    #     serializer = CommentSerializer(comment, data=request.data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         serializer.save()
-    #         return Response(serializer.data)
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])

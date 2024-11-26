@@ -15,9 +15,13 @@ class ArticleListSerializer(serializers.ModelSerializer):
     comment_count = serializers.SerializerMethodField()
     def get_comment_count(self, obj):
         return Comment.objects.filter(article=obj).count()
-    likes_count = serializers.SerializerMethodField()
-    def get_likes_count(self, obj):
-        return obj.like_users.count()
+    class LikeUserSerializer(serializers.ModelSerializer):
+        likes_count = serializers.SerializerMethodField()
+        class Meta:
+            model = UserModel
+            fields = ('username','likes_count',)
+        def get_likes_count(self, obj):
+            return obj.like_users.count()
     class Meta:
         model = Article
         fields = '__all__'
@@ -29,6 +33,12 @@ class ArticleSerializer(serializers.ModelSerializer):
             model = UserModel
             fields = ('username',)
     user = ArticleUserSerializer(read_only=True)
+    class LikeUserSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = UserModel
+            fields = ('username',)
+    like_users = LikeUserSerializer(many=True, read_only=True)
+
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     class CommentDetailSerializer(serializers.ModelSerializer):

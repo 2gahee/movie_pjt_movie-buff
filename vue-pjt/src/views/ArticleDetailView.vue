@@ -26,9 +26,10 @@
       </div>
   </div>
 
-  <div class="like-section">
-    <button v-show="article.user.username != currentUsername" @click="likeArticle" class="like-btn">좋아요</button>
-    <p class="like-count">좋아요 {{ like_count }}개</p>
+  <div>
+    <button v-if="article.user.username != currentUsername && is_liked" @click="likeArticle">좋아요 취소</button>
+    <button v-if="article.user.username != currentUsername && !is_liked" @click="likeArticle">좋아요</button>
+    <p>좋아요 {{ like_count }}개</p>
   </div>
   <!-- 댓글 -->
   <div class="card mt-3">
@@ -87,9 +88,12 @@ import CommentCreate from '@/components/CommentCreate.vue';
 const route = useRoute()
 const router = useRouter();
 const store = useMovieStore()
-const like_count = ref(null)
+const like_users = ref(null)
+const like_count = ref()
+const is_liked = ref(null)
 const article = ref(null)
 const comments = ref([]); // 댓글 리스트 상태
+
 
 const id = route.params.id //현재 게시글 id
 const currentPage = ref(1);
@@ -110,7 +114,7 @@ const changePage = (page) => {
     currentPage.value = page;
   }
 };
-
+// const isLiked = computed(() => (like_users.value.includes(currentUsername)))
 // 새 댓글을 추가하는 함수
 const addComment = (newComment) => {
   comments.value.push(newComment); 
@@ -134,7 +138,9 @@ axios({
     console.log(res.data)
     article.value = res.data
     comments.value = res.data.comment_set || []; // 댓글 데이터를 받아 저장(존재하지 않으면 빈 배열)
+    like_users.value = res.data.like_users.map((user) => user.username)
     like_count.value = res.data.like_users.length
+    is_liked.value = like_users.value.includes(currentUsername)
   })
   .catch((err) => {
     console.log(err)
@@ -173,8 +179,9 @@ const likeArticle = () => {
   }
 })
   .then((res) => {
-    console.log(res.data)
+    console.log(like_users.value)
     like_count.value = res.data.like_users.length
+    is_liked.value = !is_liked.value
   })
   .catch((err) => {
     console.log(err)

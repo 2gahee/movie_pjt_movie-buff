@@ -1,10 +1,25 @@
+# from rest_framework.response import Response
+# from rest_framework.decorators import api_view, permission_classes
+# from rest_framework import status
+# from django.shortcuts import get_object_or_404, get_list_or_404
+# from django.shortcuts import render
+# from .models import UserMovie, MoviePicks
+# from .serializers import MoviePicksSerializer
+import requests
+# from rest_framework.exceptions import NotFound
+# from django.conf import settings
+# from django.contrib.auth.decorators import login_required
+# from rest_framework.permissions import AllowAny
+
 from bs4 import BeautifulSoup
 import requests
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from django.http import JsonResponse
 
+# def megaboxEvents(reqeust):
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # 브라우저를 숨긴 상태로 실행 (옵션)
 
@@ -16,7 +31,7 @@ driver = webdriver.Chrome(
 
 driver.get("https://www.google.com")
 User_Agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
-# url = ["https://www.megabox.co.kr/event/megabox", "https://www.megabox.co.kr/event/movie"]
+url = "https://www.megabox.co.kr/event/megabox"
 driver.get(url)
 
 # 페이지 로드 후 HTML 소스 가져오기
@@ -26,7 +41,6 @@ soup = BeautifulSoup(html, 'html.parser')
 # 이벤트 리스트 가져오기
 a_tags = soup.select("#event-list-wrap > div > div > ul > li > a")
 event_no_list = [tag['data-no'] for tag in a_tags if 'data-no' in tag.attrs]
-print(event_no_list)
 goods_list = []
 goods_url = "https://megabox.co.kr/on/oh/ohe/Event/selectGoodsStockPrco.do"
 for num in event_no_list:
@@ -54,7 +68,7 @@ for num in event_no_list:
             # 응답 HTML 파싱
             soup = BeautifulSoup(goods_response.text, "html.parser")
             # 결과 저장할 리스트
-            goods_stock_info = [goodsBtn["data-nm"]]
+            goods_stock_info = []
             # 지점 정보 추출
             areas = soup.find_all("li", class_="area-cont on")  # 지역별 구분
             for area in areas:
@@ -63,12 +77,16 @@ for num in event_no_list:
                 for branch in branches:
                     branch_name = branch.find("a").text.strip()  # 지점 이름
                     stock_status = branch.find("span").text.strip()  # 보유 상태
+                    if stock_status == "보유" or "소량보유":
                     # 정보 저장
-                    goods_stock_info.append({
-                        "region": region_name,
-                        "branch": branch_name,
-                        "stock_status": stock_status
-                    })
-            goods_list.append(goods_stock_info)
+                        goods_stock_info.append({
+                            "region": region_name,
+                            "branch": branch_name,
+                            "stock_status": stock_status
+                        })
+            if len(goods_stock_info):
+                goods_list.append({"goods_name": goodsBtn["data-nm"], "goods_info": goods_stock_info})
 print(goods_list)
 driver.quit()
+    # return JsonResponse(goods_list, safe=False)
+

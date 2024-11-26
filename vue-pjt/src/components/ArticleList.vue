@@ -8,7 +8,7 @@
                 <th class="title col-3"><a>제목</a></th>
                 <th class="username col-2"><a>작성자</a></th>
                 <th class="created-at col-3"><a>작성일</a></th>
-                <th class="comments col-2"><a>좋아요수</a></th>
+                <th class="comments col-2"><a>좋아요 수</a></th>
             </tr>
             </thead>
             <tbody>
