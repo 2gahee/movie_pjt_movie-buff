@@ -40,7 +40,7 @@ for goods in goods_list:
             if response.status_code == 200:
                 data = response.json()
                 # print(data)
-                time =  data["routes"][0]["summary"]["duration"]
+                time =  data["routes"][0]["summary"]["distance"]
                 map_dict.update({branch : time})
             else:
                 print(f"Error fetching coordinates for {branch_string}: {response.status_code}, {response.text}")
